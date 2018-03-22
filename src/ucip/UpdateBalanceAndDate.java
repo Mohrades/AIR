@@ -131,7 +131,9 @@ public StringBuffer formerRequete(String msisdn,HashSet<BalanceAndDate> balances
 }
 
 public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> balancesAndDates,String transactionType,String transactionCode,String originOperatorID){
-    try{
+	boolean responseCode = false;
+	
+	try{
     	if(air.isOpen()){
         	StringBuffer requete = formerRequete(msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);
         	requete.append("</struct></value></param></params></methodCall>");
@@ -141,12 +143,16 @@ public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> ba
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
+                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>responseCode</name>")){
                         String code_reponse=sortie.nextLine();
                         int last=code_reponse.indexOf("</i4></value>");
-                        return (Integer.parseInt(code_reponse.substring(11, last)) == 0);
+                        responseCode = Integer.parseInt(code_reponse.substring(11, last)) == 0;
+                        
+                        sortie.close();
+                        break;
                     }
                 }    		
     	}
@@ -158,7 +164,7 @@ public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> ba
 
        }
 
-	return false;
+	return responseCode;
 }
 
 

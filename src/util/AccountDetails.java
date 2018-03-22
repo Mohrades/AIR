@@ -31,7 +31,7 @@ public class AccountDetails {
         return (new DateTime_iso8601()).parse(details.get("supervisionExpiryDate"));
     }
     public boolean isAccountFlags(){
-        return details.get("accountFlags").equals("1")?true:false;
+        return details.get("accountFlags").equals("1") ? true :  false;
     }
     public int getLanguageIDCurrent(){
         return Integer.parseInt(details.get("languageIDCurrent"));
@@ -61,19 +61,21 @@ public class AccountDetails {
         }
         return serviceOfferings;
     }
+
     public int getServiceClassOriginal(){
         try{
-        return Integer.parseInt(details.get("serviceClassOriginal"));
+        	return Integer.parseInt(details.get("serviceClassOriginal"));
         }catch(NumberFormatException e){
             return -1;
         }
     }
     
     public Date getServiceClassTemporaryExpiryDate(){
-        try{
-        return (new DateTime_iso8601()).parse(details.get("serviceClassTemporaryExpiryDate")); 
-    }catch(NullPointerException e){
-        return null;
-    }
+        try {
+        	return (new DateTime_iso8601()).parse(details.get("serviceClassTemporaryExpiryDate"));
+
+        } catch(NullPointerException e) {
+        	return null;
+        }
     }
 }

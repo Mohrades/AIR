@@ -31,7 +31,9 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
 }
 
     public BalanceAndDate getValues(AIRConnector air, String msisdn, int dedicatedAccountID){
-       try{
+    	BalanceAndDate balance = null;
+    	
+    	try{
     	   if(air.isOpen()){
     		   StringBuffer requete = formerRequete(msisdn, dedicatedAccountID);
     	       requete.append("</struct></value></param></params></methodCall>");   
@@ -45,6 +47,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	            while(true){
     	                String ligne=sortie.nextLine();
     	                if(ligne==null) {
+    	                	sortie.close();
     	                    break;
     	                }
     	                else{
@@ -58,7 +61,9 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	                    int last=date.indexOf("</dateTime.iso8601></value>");
     	                    date=date.substring(25, last);
     	                    balanceAndDate.setExpiryDate((new DateTime_iso8601()).parse(date));
-    	                    return balanceAndDate;
+    	                    
+    	                    sortie.close();
+    	                    balance = balanceAndDate;
     	                }
     	            }
     	            }
@@ -68,6 +73,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	            while(true){
     	                String ligne=sortie.nextLine();
     	                if(ligne==null) {
+    	                	sortie.close();
     	                    break;
     	                }
     	                else{
@@ -82,7 +88,9 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	                    date=date.substring(25, last);
     	                    DedicatedAccount DA= new DedicatedAccount(dedicatedAccountID,val,(new DateTime_iso8601()).parse(date));
     	                    DA.setRelative(false);
-    	                    return DA;
+    	                    
+    	                    sortie.close();
+    	                    balance = DA;
     	                }
     	            }
     	            } 
@@ -96,7 +104,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
 
        }
 
-       return null;
+       return balance;
 }
 
 }

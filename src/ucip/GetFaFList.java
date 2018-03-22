@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import connexions.AIRConnector;
-import connexions.AIRRequest;
 import util.DateTime_iso8601;
 import util.FaFList;
 import util.FafInformation;
@@ -48,11 +47,11 @@ public class GetFaFList {
             	requete.append("</struct></value></param></params></methodCall>");    
                 String reponse=air.execute(requete.toString());
                 Scanner sortie= new Scanner(reponse);
-
                 
               while(true){
                     String ligne=sortie.nextLine(); 
                     if(ligne==null) {
+                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>fafChangeUnbarDate</name>")){
@@ -95,8 +94,13 @@ public class GetFaFList {
         	}
 
         }
-        catch(NoSuchElementException e){  
-       }
+        catch(NoSuchElementException e){
+        	
+        } finally {
+          	air.fermer();
+
+          }
+
         FaFList fafList=new FaFList(fafInformationList);
         fafList.setFafChangeUnbarDate(fafChangeUnbarDate);
         fafList.setFafMaxAllowedNumbersReachedFlag(fafMaxAllowedNumbersReachedFlag);

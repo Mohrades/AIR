@@ -5,19 +5,13 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import connexions.AIRRequest;
+import connexions.AIRConnector;
 import util.DateTime_iso8601;
 import util.OfferInformation;
 
 public class GetOffers {
-	private StringBuffer requete;
-    private AIRRequest air;
     
-    public GetOffers(AIRRequest air){
-    	 this.air=air;
-    }
-    
-    public void formerRequete(String number,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
+    public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
     	StringBuffer offerIDs=new StringBuffer("");
     	if(offerSelection!=null){
     	int nbre=offerSelection.length;
@@ -45,13 +39,13 @@ public class GetOffers {
     		DedicatedAccountDeatilsFlag.append("<member><name>requestedDedicatedAccountDeatilsFlag</name><value><boolean>1</boolean></value></member>");
     	}
     	
-    	requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
-    	requete.append(number);
+    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+    	requete.append(msisdn);
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
     	requete.append((new DateTime_iso8601()).format(new Date(),true));
     	requete.append("</dateTime.iso8601></value></member><member><name>subscriberNumberNAI</name><value><int>1</int></value></member>");
     	requete.append("<member><name>subscriberNumber</name><value><string>");
-    	requete.append(number);
+    	requete.append(msisdn);
     	requete.append("</string></value></member>");
     	if(requestInactiveOffersFlag){
     		requete.append("<member><name>requestInactiveOffersFlag</name><value><boolean>1</boolean></value></member>");
@@ -61,24 +55,35 @@ public class GetOffers {
     	requete.append(RequestedTypeFlag);
     	requete.append(DedicatedAccountDeatilsFlag);
     	
+    	return requete;
+    	
 }
     
-    public HashSet<OfferInformation> getDonnees(){
-    	requete.append("</struct></value></param></params></methodCall>");
-    	String reponse=air.executerRequetes(requete.toString());
+    public HashSet<OfferInformation> getDonnees(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
     	HashSet<OfferInformation> data=new HashSet<OfferInformation>();
-        Scanner sortie= new Scanner(reponse);
+        
     	try{
+    		if(air.isOpen()){
+    	    	StringBuffer requete = formerRequete(msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestedDedicatedAccountDeatilsFlag);
+    	    	requete.append("</struct></value></param></params></methodCall>");
+    	    	String reponse=air.execute(requete.toString());
+    	    	Scanner sortie= new Scanner(reponse);
+    	    	
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
+                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>responseCode</name>")){
                         String code_reponse=sortie.nextLine();
                         int last=code_reponse.indexOf("</i4></value>");
-                        int responseCode= Integer.parseInt(code_reponse.substring(11, last));
-                        if(responseCode==165)return null;
+                        
+                        if(Integer.parseInt(code_reponse.substring(11, last)) == 165) {
+                        	data=new HashSet<OfferInformation>();
+                        	break;
+                        }
+
                     }
                     else if(ligne.equals("<name>offerInformation</name>")){
                         String check=sortie.nextLine();
@@ -118,26 +123,16 @@ public class GetOffers {
                          break;
                    }
                 }
+    		}
                 }
         catch(NoSuchElementException ex){
+        	
+        } finally {
+           	air.fermer();
+
         }
+
     	return data;
     }
-
-	public StringBuffer getRequete() {
-		return requete;
-	}
-
-	public void setRequete(StringBuffer requete) {
-		this.requete = requete;
-	}
-
-	public AIRRequest getAir() {
-		return air;
-	}
-
-	public void setAir(AIRRequest air) {
-		this.air = air;
-	}
     
 }

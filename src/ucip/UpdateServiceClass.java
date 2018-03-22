@@ -81,6 +81,8 @@ public class UpdateServiceClass {
     }
     
     public boolean update(AIRConnector air, String msisdn,String serviceClassAction,int serviceClassNew,int serviceClassTemporaryNew,Date serviceClassTemporaryNewExpiryDate,String originOperatorID){
+    	boolean responseCode = false;
+    	
     	try{
 	    	if(air.isOpen()){
 	        	StringBuffer requete = formerRequete(msisdn,serviceClassAction,serviceClassNew,serviceClassTemporaryNew,serviceClassTemporaryNewExpiryDate,originOperatorID);
@@ -90,12 +92,16 @@ public class UpdateServiceClass {
 	                while(true){
 	                    String ligne=sortie.nextLine();
 	                    if(ligne==null) {
+	                    	sortie.close();
 	                        break;
 	                    }
 	                    else if(ligne.equals("<name>responseCode</name>")){
 	                        String code_reponse=sortie.nextLine();
 	                        int last=code_reponse.indexOf("</i4></value>");
-	                        return (Integer.parseInt(code_reponse.substring(11, last))==0);
+	                        responseCode = Integer.parseInt(code_reponse.substring(11, last))==0;
+	                        
+	                        sortie.close();
+	                        break;
 	                    }
 	                }    		
 	    	}
@@ -105,7 +111,7 @@ public class UpdateServiceClass {
        	air.fermer();
     }
 
-	return false;
+	return responseCode;
 }
     
 }

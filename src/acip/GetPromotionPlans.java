@@ -7,25 +7,19 @@ import java.util.Scanner;
 
 import util.DateTime_iso8601;
 import util.PromotionPlanInformation;
-import connexions.AIRRequest;
+import connexions.AIRConnector;
 
 public class GetPromotionPlans {
-	private StringBuffer requete;
-    private AIRRequest air;
-    
-    public GetPromotionPlans(AIRRequest air){
-        this.air=air;
-    }
-    
-    public void formerRequete(String number,String originOperatorID){
+
+    public StringBuffer formerRequete(String msisdn,String originOperatorID){
         
-        requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetPromotionPlans</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
-    	requete.append(number);
+    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetPromotionPlans</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+    	requete.append(msisdn);
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
     	requete.append((new DateTime_iso8601()).format(new Date(),true));
     	requete.append("</dateTime.iso8601></value></member><member><name>subscriberNumberNAI</name><value><int>1</int></value></member>");
     	requete.append("<member><name>subscriberNumber</name><value><string>");
-    	requete.append(number);
+    	requete.append(msisdn);
     	requete.append("</string></value></member>");
     	if(originOperatorID!=null){
         	requete.append("<member><name>originOperatorID</name><value><string>");
@@ -33,72 +27,69 @@ public class GetPromotionPlans {
         	requete.append("</string></value></member>");
         }
     	
+    	return requete;
     } 
    
-    public HashSet<PromotionPlanInformation> getDonnees(){
-    	requete.append("</struct></value></param></params></methodCall>");
-        String reponse=air.executerRequetes(requete.toString());
-        Scanner sortie= new Scanner(reponse);
+    public HashSet<PromotionPlanInformation> getDonnees(AIRConnector air, String msisdn,String originOperatorID){
         HashSet<PromotionPlanInformation> liste=new HashSet<PromotionPlanInformation>();
-        try{
-            while(true){
-                String ligne=sortie.nextLine(); 
-                if(ligne==null) {
-                    break;
-                }
-                else if(ligne.equals("<name>promotionPlanInformation</name>")){
-                    String check=sortie.nextLine();
-                    while(!check.equals("</array>")){
-                        if(check.equals("<struct>")){
-                            String id = "";
-                            Date start = null,end = null;
-                            while(!check.equals("</struct>")){
-                            if(check.equals("<name>promotionStartDate</name>")){
-                                String date=sortie.nextLine();
-                                int last=date.indexOf("</dateTime.iso8601></value>");
-                                date=date.substring(25, last);
-                                start=(new DateTime_iso8601()).parse(date);
-                            }
-                            else if(check.equals("<name>promotionPlanID</name>")){
-                                String chaine=sortie.nextLine();
-                                int last=chaine.indexOf("</string></value>");
-                                id=chaine.substring(15, last);
-                            }
-                            else if(check.equals("<name>promotionEndDate</name>")){
-                                String date=sortie.nextLine();
-                                int last=date.indexOf("</dateTime.iso8601></value>");
-                                date=date.substring(25, last);
-                                end=(new DateTime_iso8601()).parse(date);
-                            }
-                            check=sortie.nextLine();
-                            }
-                       liste.add(new PromotionPlanInformation(id,start,end));
+        
+        try {
+        	if(air.isOpen()) {
+            	StringBuffer requete = formerRequete(msisdn,originOperatorID);
+            	requete.append("</struct></value></param></params></methodCall>");
+            	String reponse=air.execute(requete.toString());
+            	Scanner sortie= new Scanner(reponse);
+            	        
+                while(true){
+                    String ligne=sortie.nextLine(); 
+                    if(ligne==null) {
+                    	sortie.close();
+                        break;
                     }
-                     check=sortie.nextLine();   
+                    else if(ligne.equals("<name>promotionPlanInformation</name>")){
+                        String check=sortie.nextLine();
+                        while(!check.equals("</array>")){
+                            if(check.equals("<struct>")){
+                                String id = "";
+                                Date start = null,end = null;
+                                while(!check.equals("</struct>")){
+                                if(check.equals("<name>promotionStartDate</name>")){
+                                    String date=sortie.nextLine();
+                                    int last=date.indexOf("</dateTime.iso8601></value>");
+                                    date=date.substring(25, last);
+                                    start=(new DateTime_iso8601()).parse(date);
+                                }
+                                else if(check.equals("<name>promotionPlanID</name>")){
+                                    String chaine=sortie.nextLine();
+                                    int last=chaine.indexOf("</string></value>");
+                                    id=chaine.substring(15, last);
+                                }
+                                else if(check.equals("<name>promotionEndDate</name>")){
+                                    String date=sortie.nextLine();
+                                    int last=date.indexOf("</dateTime.iso8601></value>");
+                                    date=date.substring(25, last);
+                                    end=(new DateTime_iso8601()).parse(date);
+                                }
+                                check=sortie.nextLine();
+                                }
+                           liste.add(new PromotionPlanInformation(id,start,end));
+                        }
+                         check=sortie.nextLine();   
+                       }
+                         break;
                    }
-                     break;
-               }
-          }
+              }        		
+        	}
+
         }
         catch(NoSuchElementException e){  
-       }
+        	
+       } finally {
+          	air.fermer();
+
+          }
+        
 		return liste;
 }
-
-	public StringBuffer getRequete() {
-		return requete;
-	}
-
-	public void setRequete(StringBuffer requete) {
-		this.requete = requete;
-	}
-
-	public AIRRequest getAir() {
-		return air;
-	}
-
-	public void setAir(AIRRequest air) {
-		this.air = air;
-	}   
     
 }

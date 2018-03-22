@@ -81,147 +81,87 @@ public class AIRRequest {
 		return new UpdateCommunityList().update(getConnection(), msisdn,communityOldIDs,communityNewIDs,originOperatorID);
 	}
       
-	public boolean updateSubscriberSegmentation(String number,Integer accountGroupID,ServiceOfferings serviceOfferings,String originOperatorID){
-		UpdateSubscriberSegmentation update=new UpdateSubscriberSegmentation(this);
-        update.formerRequete(number,accountGroupID,serviceOfferings,originOperatorID);
-        return update.update();
+	public boolean updateSubscriberSegmentation(String msisdn,Integer accountGroupID,ServiceOfferings serviceOfferings,String originOperatorID){
+		return new UpdateSubscriberSegmentation().update(getConnection(),msisdn,accountGroupID,serviceOfferings,originOperatorID);
 	}
 	
-	public HashSet<OfferInformation> getOffers(String number,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
-		GetOffers offers=new GetOffers(this);
-  	  	offers.formerRequete(number, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestedDedicatedAccountDeatilsFlag);
-  	  
-  	  	return offers.getDonnees();
+	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
+		return new GetOffers().getDonnees(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestedDedicatedAccountDeatilsFlag);
 	}
         
-	public boolean updateOffer(String number,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID){
-		UpdateOffer update=new UpdateOffer(this);
-  	  	update.formerRequete(number, offerID,startDate,expiryDate,offerType,originOperatorID);
-  	  
-  	  	return update.update();
+	public boolean updateOffer(String msisdn,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID){
+		return new UpdateOffer().update(getConnection(), msisdn, offerID,startDate,expiryDate,offerType,originOperatorID);
 	}
   
-	public boolean deleteOffer(String number,int offerID,String originOperatorID) {
-		DeleteOffer offer=new DeleteOffer(this);
-  	  	offer.formerRequete(number, offerID,originOperatorID);
-
-  	  	return offer.delete();
+	public boolean deleteOffer(String msisdn,int offerID,String originOperatorID) {
+		return new DeleteOffer().delete(getConnection(), msisdn, offerID,originOperatorID);
 	}
 
-	public HashSet<UsageCounterUsageThresholdInformation> getUsageThresholdsAndCounters(String number,String originOperatorID){
-		GetUsageThresholdsAndCounters counters=new GetUsageThresholdsAndCounters(this);
-  	  	counters.formerRequete(number,originOperatorID);
-  	  	
-  	  	return counters.getValues();
+	public HashSet<UsageCounterUsageThresholdInformation> getUsageThresholdsAndCounters(String msisdn,String originOperatorID){
+		return new GetUsageThresholdsAndCounters().getValues(getConnection(), msisdn,originOperatorID);
 	}
 
-	public boolean updateUsageThresholdsAndCounters(String number,HashSet<UsageCounterUsageThresholdInformation> usageCounterUpdateInformation,HashSet<UsageThreshold>usageThresholdUpdateInformation,String originOperatorID){
-		UpdateUsageThresholdsAndCounters update=new UpdateUsageThresholdsAndCounters(this);
-  	  	update.formerRequete(number,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
-  	  	
-  	  	return update.update();
+	public boolean updateUsageThresholdsAndCounters(String msisdn,HashSet<UsageCounterUsageThresholdInformation> usageCounterUpdateInformation,HashSet<UsageThreshold>usageThresholdUpdateInformation,String originOperatorID){
+		return new UpdateUsageThresholdsAndCounters().update(getConnection(), msisdn,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
 	}
   
-	public boolean updateFaFList(String number,String fafAction,FaFList fafInformation,String originOperatorID){
-		UpdateFaFList update=new UpdateFaFList(this);
-  	  	update.formerRequete(number, fafAction, fafInformation,originOperatorID);
-
-  	  	return update.update();
+	public boolean updateFaFList(String msisdn,String fafAction,FaFList fafInformation,String originOperatorID){
+		return new UpdateFaFList().update(getConnection(), msisdn, fafAction, fafInformation,originOperatorID);
 	}
       
-	public boolean deleteAccumulators(String number,Integer serviceClassCurrent ,HashSet<AccumulatorInformation> accumulatorIdentifier,String originOperatorID){
-		DeleteAccumulators delete=new DeleteAccumulators(this);
-  	  	delete.formerRequete(number, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
-
-  	  	return delete.delete();
+	public boolean deleteAccumulators(String msisdn,Integer serviceClassCurrent ,HashSet<AccumulatorInformation> accumulatorIdentifier,String originOperatorID){
+		return new DeleteAccumulators().delete(getConnection(), msisdn, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
 	}
 
-	public boolean deleteDedicatedAccounts(String number,Integer serviceClassCurrent ,HashSet<DedicatedAccount> dedicatedAccountIdentifier,String originOperatorID){
-		DeleteDedicatedAccounts delete=new DeleteDedicatedAccounts(this);
-  	  	delete.formerRequete(number, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
-
-  	  	return delete.delete();
+	public boolean deleteDedicatedAccounts(String msisdn,Integer serviceClassCurrent ,HashSet<DedicatedAccount> dedicatedAccountIdentifier,String originOperatorID){
+		return new DeleteDedicatedAccounts().delete(getConnection(), msisdn, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
 	}
 
-	public boolean deleteUsageThresholds(String number,HashSet<UsageThreshold> usageThresholds,String originOperatorID){
-		DeleteUsageThresholds delete=new DeleteUsageThresholds(this);
-  	  	delete.formerRequete(number, usageThresholds,originOperatorID);
-
-  	  	return delete.delete();
+	public boolean deleteUsageThresholds(String msisdn,HashSet<UsageThreshold> usageThresholds,String originOperatorID){
+		return new DeleteUsageThresholds().delete(getConnection(), msisdn, usageThresholds,originOperatorID);
 	}
 
-	public void getPromotionCounters(String number){
-		GetPromotionCounters promotionCounters = new GetPromotionCounters(this);
-        promotionCounters.formerRequete(number);
-        promotionCounters.getDonnees();
+	public void getPromotionCounters(String msisdn){
+		new GetPromotionCounters().getDonnees(getConnection(), msisdn);
 	}
 
-	public HashSet<PromotionPlanInformation> getPromotionPlans(String number,String originOperatorID){
-		GetPromotionPlans promotionPlans=new GetPromotionPlans(this);
-        promotionPlans.formerRequete(number,originOperatorID);
-        return promotionPlans.getDonnees();
+	public HashSet<PromotionPlanInformation> getPromotionPlans(String msisdn,String originOperatorID){
+		return new GetPromotionPlans().getDonnees(getConnection(), msisdn,originOperatorID);
 	}
 
-	public boolean updateAccumulators(String number,HashSet<AccumulatorInformation> accumulatorUpdateInformation,String originOperatorID){
-		UpdateAccumulators update=new UpdateAccumulators(this);
-  	  	update.formerRequete(number, accumulatorUpdateInformation,originOperatorID);
-
-  	  	return update.update();
+	public boolean updateAccumulators(String msisdn,HashSet<AccumulatorInformation> accumulatorUpdateInformation,String originOperatorID){
+		return new UpdateAccumulators().update(getConnection(), msisdn, accumulatorUpdateInformation,originOperatorID);
 	}
 
-	public boolean updatePromotionPlan(String number,String promotionPlanAction,PromotionPlanInformation promotionPlanNew,PromotionPlanInformation promotionPlanOld,String originOperatorID){
-		UpdatePromotionPlan update=new UpdatePromotionPlan(this);
-  	  	update.formerRequete(number, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
-
-  	  	return update.update();
+	public boolean updatePromotionPlan(String msisdn,String promotionPlanAction,PromotionPlanInformation promotionPlanNew,PromotionPlanInformation promotionPlanOld,String originOperatorID){
+		return new UpdatePromotionPlan().update(getConnection(), msisdn, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
 	}
   
-	public boolean installSubscriber (String number,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID){
-		InstallSubscriber installSubscriber = new InstallSubscriber(this);
-  	  	installSubscriber.formerRequete(number, serviceClassNew, temporaryBlockedFlag, originOperatorID);
-
-  	  	return installSubscriber.installSubscriber();
+	public boolean installSubscriber (String msisdn,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID){
+		return new InstallSubscriber().install(getConnection(), msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
 	}
 
-	public boolean linkSubordinateSubscriber (String number,String masterAccountNumber,String originOperatorID){
-		LinkSubordinateSubscriber linkSubordinateSubscriber = new LinkSubordinateSubscriber(this);
-  	  	linkSubordinateSubscriber.formerRequete(number, masterAccountNumber, originOperatorID);
-
-  	  	return linkSubordinateSubscriber.masterAccountNumber();
+	public boolean linkSubordinateSubscriber (String msisdn,String masterAccountNumber,String originOperatorID){
+		return new LinkSubordinateSubscriber().link(getConnection(), msisdn, masterAccountNumber, originOperatorID);
 	}
 
-	public boolean refill(String number,String transactionAmount,String transactionCurrency,String refillProfileID,String voucherActivationCode,String originOperatorID,String transactionType,String transactionCode){
-		Refill refill = new Refill(this);
-  	  	refill.formerRequete(number,transactionAmount,transactionCurrency,refillProfileID,voucherActivationCode,originOperatorID,transactionType,transactionCode);
-
-  	  	return  refill.update();
+	public boolean refill(String msisdn,String transactionAmount,String transactionCurrency,String refillProfileID,String voucherActivationCode,String originOperatorID,String transactionType,String transactionCode){
+		return new Refill().update(getConnection(), msisdn,transactionAmount,transactionCurrency,refillProfileID,voucherActivationCode,originOperatorID,transactionType,transactionCode);
 	}
 
-	public boolean deleteSubscriber(String number,String originOperatorID){
-		DeleteSubscriber deleteSubscriber=new DeleteSubscriber(this);
-  	  	deleteSubscriber.formerRequete(number,originOperatorID);
-
-  	  	return deleteSubscriber.delete();
+	public boolean deleteSubscriber(String msisdn,String originOperatorID){
+		return new DeleteSubscriber().delete(getConnection(), msisdn,originOperatorID);
 	}
 
-	public boolean addPAM(String number,String originOperatorID, String pamClassID, String pamServiceID, String pamScheduleID){
-		AddPeriodicAccountManagementData addPAM=new AddPeriodicAccountManagementData(this);
-  	  	addPAM.formerRequete(number,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
-
-  	  	return addPAM.add();
+	public boolean addPAM(String msisdn,String originOperatorID, String pamClassID, String pamServiceID, String pamScheduleID){
+		return new AddPeriodicAccountManagementData().add(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
 	}
 
-	public boolean deletePAM(String number,String originOperatorID, int pamClassID, int pamServiceID, int pamScheduleID){
-		DeletePeriodicAccountManagementData deletePam=new DeletePeriodicAccountManagementData(this);
-  	  	deletePam.formerRequete(number,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
-
-  	  	return deletePam.delete();
+	public boolean deletePAM(String msisdn,String originOperatorID, int pamClassID, int pamServiceID, int pamScheduleID){
+		return new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
 	}
 
-	public boolean runPAM(String number,String originOperatorID, int pamServiceID){
-		RunPeriodicAccountManagement runPam=new RunPeriodicAccountManagement(this);
-  	  	runPam.formerRequete(number,originOperatorID, pamServiceID);
-
-  	  	return runPam.runPAM();
+	public boolean runPAM(String msisdn,String originOperatorID, int pamServiceID){
+		return new RunPeriodicAccountManagement().run(getConnection(), msisdn,originOperatorID, pamServiceID);
 	}
 }

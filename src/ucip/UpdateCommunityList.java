@@ -57,7 +57,9 @@ public class UpdateCommunityList {
             										
 }
     public boolean update(AIRConnector air, String msisdn,int[] communityOldIDs,int[] communityNewIDs,String originOperatorID){
-    try{
+    	boolean responseCode = false;
+    	
+    	try{
     	if(air.isOpen()){
     		StringBuffer requete = formerRequete(msisdn,communityOldIDs,communityNewIDs,originOperatorID);
     		
@@ -67,12 +69,16 @@ public class UpdateCommunityList {
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
+                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>responseCode</name>")){
                         String code_reponse=sortie.nextLine();
                         int last=code_reponse.indexOf("</i4></value>");
-                        return (Integer.parseInt(code_reponse.substring(11, last))==0);
+                        responseCode = Integer.parseInt(code_reponse.substring(11, last))==0;
+                        
+                        sortie.close();
+                        break;
                     }
                 }
     	}
@@ -83,7 +89,7 @@ public class UpdateCommunityList {
        	air.fermer();
 
        }
-	return false;
+	return responseCode;
 }
     
 }

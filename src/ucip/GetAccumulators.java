@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import connexions.AIRConnector;
-import connexions.AIRRequest;
 import util.AccumulatorInformation;
 import util.DateTime_iso8601;
 
@@ -61,6 +60,7 @@ public class GetAccumulators {
               while(true){
                     String ligne=sortie.nextLine(); 
                     if(ligne==null) {
+                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>accumulatorInformation</name>")){
