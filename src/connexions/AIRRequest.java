@@ -46,9 +46,9 @@ import util.UsageThreshold;
 public class AIRRequest {
 
 	public AIRRequest() {
-		
+
 	}
-	
+
 	public AIRConnector getConnection() {
 		return new AIRConnector("172.30.206.86", 10010,5);
 	}

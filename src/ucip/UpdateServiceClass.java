@@ -40,7 +40,7 @@ public class UpdateServiceClass {
         	chaine.append(date);                                                                          
         }
         else if(serviceClassAction.equals("Set")){
-            if(date.equals("")){
+            if(date.toString().equals("")){
             	chaine.append("<member><name>serviceClassNew</name><value><i4>");
             	chaine.append(serviceClassNew);
             	chaine.append("</i4></value></member>");
