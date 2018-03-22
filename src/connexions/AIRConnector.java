@@ -42,6 +42,7 @@ public class AIRConnector {
 		try {
 			if(isOpen()){
 				socket.close();
+
 	    	}
 
 		} catch (IOException e) {
