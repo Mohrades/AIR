@@ -9,7 +9,7 @@ import util.DateTime_iso8601;
 
 public class AddPeriodicAccountManagementData {
 
-    
+
 	public StringBuffer formerRequete(String msisdn,String originOperatorID, String pamClassID, String pamServiceID, String pamScheduleID){
         
 		StringBuffer requete = new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>AddPeriodicAccountManagementData</methodName><params><param><value><struct><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originNodeType</name><value><string>EXT</string></value></member>");
