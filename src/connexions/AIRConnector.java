@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class AIRConnector {
-	
+
 	private BufferedInputStream in;
     private OutputStream out;
     private String ip;
