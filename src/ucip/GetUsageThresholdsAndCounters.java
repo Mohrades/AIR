@@ -30,7 +30,7 @@ public class GetUsageThresholdsAndCounters {
     	return requete;
     }
     
-    public HashSet<UsageCounterUsageThresholdInformation> getValues(AIRConnector air, String msisdn,String originOperatorID){
+    public HashSet<UsageCounterUsageThresholdInformation> getData(AIRConnector air, String msisdn,String originOperatorID){
         HashSet<UsageCounterUsageThresholdInformation>counters=new HashSet<UsageCounterUsageThresholdInformation>();
         
         try{

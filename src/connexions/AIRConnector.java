@@ -10,7 +10,6 @@ public class AIRConnector {
 	
 	private BufferedInputStream in;
     private OutputStream out;
-    private boolean open;
     private String ip;
     private int port;
     private int sleep;
@@ -25,30 +24,25 @@ public class AIRConnector {
 			socket = new Socket(ip, port);
 	        out = socket.getOutputStream();
 
-			if(out != null) {
-				open=true;
-			}
-
 		} catch (UnknownHostException e) {
-
+			
 		} catch (IOException e) {
 			// if an I/O error occurs when creating the output stream or if the socket is not connected.
-
+			
 		} catch (Throwable e) {
 
 		}
 	}
 
 	public boolean isOpen() {
-		return open;
-	}
-	public void setOpen(boolean open) {
-		this.open = open;
+		return (out == null) ? false : true;
 	}
 
 	public void fermer() {
 		try {
-			socket.close();
+			if(isOpen()){
+				socket.close();
+	    	}
 
 		} catch (IOException e) {
 
@@ -58,11 +52,11 @@ public class AIRConnector {
 	public String execute(String requete) {
         try {
         	String header = "POST /Air HTTP/1.1\n" +
-            "Content-Length: "+requete.length()+"\n" +
+            "Content-Length: " + requete.length() + "\n" +
             "Content-Type: text/xml\n" +
             "User-Agent: UGw Server/4.0/1.0\n" +
             "Host: " + ip + ":" + port + "\n" +
-            "Authorization: Basic YXBwdXNlcjphcHB1c2VyMjAxMw==\n\n";
+            "Authorization: Basic cHNhcHB1c2VyOnBzYXBwdXNlckAxMjM=\n\n";
 
             requete = header + requete;
 
@@ -85,7 +79,7 @@ public class AIRConnector {
             	in.read(lecteur);
                 reponse += new String(lecteur);
                 lecteur = new byte[1024];
-                }
+            }
 
             reponse = reponse.substring(0, reponse.indexOf(String.valueOf((char) 0)));
             int beginIndex=reponse.indexOf("<?xml version=\"1.0\" encoding=\"utf-8\"?>");

@@ -36,7 +36,7 @@ public class GetFaFList {
                       
     	return requete;
 }
-    public FaFList getDonnees(AIRConnector air, String msisdn,int requestedOwner){
+    public FaFList getData(AIRConnector air, String msisdn,int requestedOwner){
         HashSet<FafInformation>fafInformationList=new HashSet<FafInformation>();
         Date fafChangeUnbarDate = null;
         boolean fafMaxAllowedNumbersReachedFlag = false;

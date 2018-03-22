@@ -59,7 +59,7 @@ public class GetOffers {
     	
 }
     
-    public HashSet<OfferInformation> getDonnees(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
+    public HashSet<OfferInformation> getData(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
     	HashSet<OfferInformation> data=new HashSet<OfferInformation>();
         
     	try{

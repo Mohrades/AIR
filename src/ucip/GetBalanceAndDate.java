@@ -13,7 +13,7 @@ public class GetBalanceAndDate {
             
 public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
 
-    StringBuffer requete = new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetBalanceAndDate</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+    StringBuffer requete = new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetBalanceAndDate</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
 	requete.append(msisdn);
 	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
 	requete.append((new DateTime_iso8601()).format(new Date(),true));
@@ -30,7 +30,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
 	return requete;
 }
 
-    public BalanceAndDate getValues(AIRConnector air, String msisdn, int dedicatedAccountID){
+    public BalanceAndDate getData(AIRConnector air, String msisdn, int dedicatedAccountID){
     	BalanceAndDate balance = null;
     	
     	try{
@@ -38,6 +38,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     		   StringBuffer requete = formerRequete(msisdn, dedicatedAccountID);
     	       requete.append("</struct></value></param></params></methodCall>");   
     	       String reponse=air.execute(requete.toString());
+    	       @SuppressWarnings("resource")
     	       Scanner sortie= new Scanner(reponse);
 
     	       if(dedicatedAccountID<1){
@@ -47,7 +48,6 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	            while(true){
     	                String ligne=sortie.nextLine();
     	                if(ligne==null) {
-    	                	sortie.close();
     	                    break;
     	                }
     	                else{
@@ -61,8 +61,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	                    int last=date.indexOf("</dateTime.iso8601></value>");
     	                    date=date.substring(25, last);
     	                    balanceAndDate.setExpiryDate((new DateTime_iso8601()).parse(date));
-    	                    
-    	                    sortie.close();
+
     	                    balance = balanceAndDate;
     	                }
     	            }
@@ -73,7 +72,6 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	            while(true){
     	                String ligne=sortie.nextLine();
     	                if(ligne==null) {
-    	                	sortie.close();
     	                    break;
     	                }
     	                else{
@@ -88,8 +86,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	                    date=date.substring(25, last);
     	                    DedicatedAccount DA= new DedicatedAccount(dedicatedAccountID,val,(new DateTime_iso8601()).parse(date));
     	                    DA.setRelative(false);
-    	                    
-    	                    sortie.close();
+
     	                    balance = DA;
     	                }
     	            }

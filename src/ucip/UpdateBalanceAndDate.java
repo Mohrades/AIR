@@ -51,7 +51,7 @@ public StringBuffer formerRequete(String msisdn,HashSet<BalanceAndDate> balances
 			mainAccountValue.append((new DateTime_iso8601()).format(((Date)expirydate),false));
 			mainAccountValue.append("</dateTime.iso8601></value></member>");
 		}
-		Object serviceFee=balanceAndDate.getServiceFee();
+		Object serviceFee = balanceAndDate.getServiceFee();
 		if(serviceFee==null);
 		else if(serviceFee instanceof Integer){
 			mainAccountValue.append("<member><name>serviceFeeExpiryDateRelative</name><value><i4>");
@@ -138,20 +138,19 @@ public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> ba
         	StringBuffer requete = formerRequete(msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);
         	requete.append("</struct></value></param></params></methodCall>");
             String reponse=air.execute(requete.toString());
-            Scanner sortie= new Scanner(reponse);
+            @SuppressWarnings("resource")
+			Scanner sortie= new Scanner(reponse);
 
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
-                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>responseCode</name>")){
                         String code_reponse=sortie.nextLine();
                         int last=code_reponse.indexOf("</i4></value>");
                         responseCode = Integer.parseInt(code_reponse.substring(11, last)) == 0;
-                        
-                        sortie.close();
+
                         break;
                     }
                 }    		
@@ -160,8 +159,7 @@ public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> ba
     catch(NoSuchElementException ex){
     	
     } finally {
-       	air.fermer();
-
+    	air.fermer();
        }
 
 	return responseCode;
@@ -170,7 +168,7 @@ public boolean update(AIRConnector air, String msisdn,HashSet<BalanceAndDate> ba
 
 public StringBuffer formerRequete(StringBuffer modifications,String msisdn,String originOperatorID){
 	
-	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>UpdateBalanceAndDate</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>UpdateBalanceAndDate</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
 	requete.append(msisdn);
 	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
 	requete.append((new DateTime_iso8601()).format(new Date(),true));

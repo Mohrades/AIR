@@ -38,7 +38,7 @@ public class GetAccountDetails {
     	
     	return requete;
 } 
-    public AccountDetails getDonnees(AIRConnector air, String msisdn){
+    public AccountDetails getData(AIRConnector air, String msisdn){
         try{
         	if(air.isOpen()){
         		StringBuffer requete = formerRequete(msisdn);

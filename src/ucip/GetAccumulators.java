@@ -47,7 +47,7 @@ public class GetAccumulators {
     			
     	return requete;
     }
-    public HashSet<AccumulatorInformation> getDonnees(AIRConnector air, String msisdn,int[][]accumulatorSelection){
+    public HashSet<AccumulatorInformation> getData(AIRConnector air, String msisdn,int[][]accumulatorSelection){
     	HashSet<AccumulatorInformation> liste=new HashSet<AccumulatorInformation>();
 
     	try{

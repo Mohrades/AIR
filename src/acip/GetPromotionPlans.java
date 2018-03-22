@@ -30,7 +30,7 @@ public class GetPromotionPlans {
     	return requete;
     } 
    
-    public HashSet<PromotionPlanInformation> getDonnees(AIRConnector air, String msisdn,String originOperatorID){
+    public HashSet<PromotionPlanInformation> getData(AIRConnector air, String msisdn,String originOperatorID){
         HashSet<PromotionPlanInformation> liste=new HashSet<PromotionPlanInformation>();
         
         try {

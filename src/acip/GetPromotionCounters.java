@@ -23,7 +23,7 @@ public class GetPromotionCounters {
     	return requete;
     } 
     
-    public void getDonnees(AIRConnector air, String msisdn){
+    public void getData(AIRConnector air, String msisdn){
         try{
         	if(air.isOpen()) {
             	StringBuffer requete = formerRequete(msisdn);
