@@ -19,7 +19,7 @@ public class InstallSubscriber {
     
     public StringBuffer formerRequete(String msisdn,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID){ 
 
-    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>InstallSubscriber</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>InstallSubscriber</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
     	requete.append(msisdn);
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
     	requete.append((new DateTime_iso8601()).format(new Date(),true));
@@ -50,11 +50,11 @@ public class InstallSubscriber {
         	StringBuffer requete = formerRequete(msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
         	    	requete.append("</struct></value></param></params></methodCall>");	
         	        String reponse=air.execute(requete.toString());
-        	        Scanner sortie= new Scanner(reponse);
+        	        @SuppressWarnings("resource")
+					Scanner sortie= new Scanner(reponse);
         	            while(true){
         	                String ligne=sortie.nextLine();
         	                if(ligne==null) {
-        	                	sortie.close();
         	                    break;
         	                }
         	                else if(ligne.equals("<name>responseCode</name>")){
@@ -63,7 +63,6 @@ public class InstallSubscriber {
         	                    int respCode=Integer.parseInt(code_reponse.substring(11, last));
         	                    responseCode = (respCode==0 || respCode==1 || respCode==2);
         	                    
-        	                    sortie.close();
         	                    break;
         	                }
         	            }   		

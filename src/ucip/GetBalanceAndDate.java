@@ -65,7 +65,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	                    balance = balanceAndDate;
     	                }
     	            }
-    	            }
+    	         }
     	       }
     	       else{
     	    	   long val = 0;

@@ -11,7 +11,7 @@ public class DeletePeriodicAccountManagementData {
 
 	public StringBuffer formerRequete(String msisdn,String originOperatorID, int pamClassID, int pamServiceID, int pamScheduleID){
         
-		StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>DeletePeriodicAccountManagementData</methodName><params><param><value><struct><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originNodeType</name><value><string>EXT</string></value></member>");
+		StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>DeletePeriodicAccountManagementData</methodName><params><param><value><struct><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originNodeType</name><value><string>EXT</string></value></member>");
 		if(originOperatorID!=null){
 		        	requete.append("<member><name>originOperatorID</name><value><string>");
 		        	requete.append(originOperatorID);
@@ -42,11 +42,11 @@ public boolean delete(AIRConnector air, String msisdn,String originOperatorID, i
 	if(air.isOpen()) {
 		StringBuffer requete = formerRequete(msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
 		String reponse=air.execute(requete.toString());
-	    Scanner sortie= new Scanner(reponse);
+	    @SuppressWarnings("resource")
+		Scanner sortie= new Scanner(reponse);
 	        while(true){
 	            String ligne=sortie.nextLine();
 	            if(ligne==null) {
-	            	sortie.close();
 	                break;
 	            }
 	            else if(ligne.equals("<name>responseCode</name>")){
@@ -54,7 +54,6 @@ public boolean delete(AIRConnector air, String msisdn,String originOperatorID, i
 	                int last=code_reponse.indexOf("</i4></value>");
 	                responseCode = Integer.parseInt(code_reponse.substring(11, last)) == 0;
 	                
-	                sortie.close();
 	                break;
 	            }
 	        }		

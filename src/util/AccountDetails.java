@@ -38,35 +38,47 @@ public class AccountDetails {
     }
     public int[] getCommunityInformationCurrent(){
     	try{
-        String []chaine=details.get("communityIDs").split("-");
-        int len=chaine.length;
-        int[] communityIDs=new int[len]; 
-        for (int i=0;i<len;i++){
-            communityIDs[i]=Integer.parseInt(chaine[i]);
-        }
-        return communityIDs;
-        }
-    	catch(NullPointerException e){
+	        String []chaine=details.get("communityIDs").split("-");
+	        int len=chaine.length;
+	        int[] communityIDs=new int[len]; 
+	        
+	        for (int i=0;i<len;i++){
+	            communityIDs[i]=Integer.parseInt(chaine[i]);
+	        }
+	        
+	        return communityIDs;
+
+        } catch(NumberFormatException e){
+            return null;
+            
+        } catch(NullPointerException e){
     		return null;
+    		
     	}
-        
-    } 
-    public Object[][]getServiceOfferings(){
+    }
+
+    public ServiceOfferings getServiceOfferings(){
+    	ServiceOfferings serviceOfferings = new ServiceOfferings();
+
         String []chaine=details.get("serviceOfferings").split(" ");
         int len=chaine.length/2;
-        Object[][]serviceOfferings=new Object[len][2];
+
         for (int i=0;i<len;i++){
-            serviceOfferings[i][0]=Integer.parseInt(chaine[2*i+1]);
-            serviceOfferings[i][1]=chaine[2*i].equals("1")?true:false;
+        	serviceOfferings.SetActiveFlag(Integer.parseInt(chaine[2*i+1]), chaine[2*i].equals("1") ? true : false);
         }
+
         return serviceOfferings;
     }
 
     public int getServiceClassOriginal(){
         try{
         	return Integer.parseInt(details.get("serviceClassOriginal"));
-        }catch(NumberFormatException e){
+        	
+        } catch(NumberFormatException e){
             return -1;
+            
+        } catch(NullPointerException e) {
+        	return -1;
         }
     }
     

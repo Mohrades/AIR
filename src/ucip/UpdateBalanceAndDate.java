@@ -23,89 +23,93 @@ public class UpdateBalanceAndDate {
 public StringBuffer formerRequete(String msisdn,HashSet<BalanceAndDate> balancesAndDates,String transactionType,String transactionCode,String originOperatorID){
 	StringBuffer mainAccountValue=new StringBuffer("");
 	StringBuffer DAsValueNew=new StringBuffer("");
+
 	for(BalanceAndDate balanceAndDate:balancesAndDates){
 		long value=balanceAndDate.getAccountValue();
 		int id=balanceAndDate.getAccountID();
 		Object expirydate=balanceAndDate.getExpiryDate();
 		boolean relative=balanceAndDate.isRelative();
-	if(id==0){
-		mainAccountValue=new StringBuffer("");
-		if(relative){
-			mainAccountValue.append("<member><name>adjustmentAmountRelative</name><value><string>");
-			mainAccountValue.append(value);
-			mainAccountValue.append("</string></value></member>");
-		}
-		else{
-			mainAccountValue.append("<member><name>mainAccountValueNew</name><value><string>");
-			mainAccountValue.append(value);
-			mainAccountValue.append("</string></value></member>");
-		}	
-		if(expirydate==null);
-		else if(expirydate instanceof Integer){
-			mainAccountValue.append("<member><name>supervisionExpiryDateRelative</name><value><i4>");
-			mainAccountValue.append(((Integer)expirydate));
-			mainAccountValue.append("</i4></value></member>");
-		}
-		else if(expirydate instanceof Date){
-			mainAccountValue.append("<member><name>supervisionExpiryDate</name><value><dateTime.iso8601>");
-			mainAccountValue.append((new DateTime_iso8601()).format(((Date)expirydate),false));
-			mainAccountValue.append("</dateTime.iso8601></value></member>");
-		}
-		Object serviceFee = balanceAndDate.getServiceFee();
-		if(serviceFee==null);
-		else if(serviceFee instanceof Integer){
-			mainAccountValue.append("<member><name>serviceFeeExpiryDateRelative</name><value><i4>");
-			mainAccountValue.append(((Integer)serviceFee));
-			mainAccountValue.append("</i4></value></member>");
-		}
-		else if(serviceFee instanceof Date){
-			mainAccountValue.append("<member><name> serviceFeeExpiryDate</name><value><dateTime.iso8601>");
-			mainAccountValue.append((new DateTime_iso8601()).format(((Date)serviceFee),false));
-			mainAccountValue.append("</dateTime.iso8601></value></member>");
-		}
-	}
-	else{
-		if(relative){
-			DAsValueNew.append("<value><struct><member><name>dedicatedAccountID</name><value><i4>");
-			DAsValueNew.append(id);
-			DAsValueNew.append("</i4></value></member><member><name>adjustmentAmountRelative</name><value><string>");
-			DAsValueNew.append(value);
-			DAsValueNew.append("</string></value></member>");;
-		}
-		else{
-			DAsValueNew.append("<value><struct><member><name>dedicatedAccountID</name><value><i4>");
-			DAsValueNew.append(id);
-			DAsValueNew.append("</i4></value></member><member><name>dedicatedAccountValueNew</name><value><string>");
-			DAsValueNew.append(value);
-			DAsValueNew.append("</string></value></member>");
-		}
-		if(expirydate==null);
-		else if(expirydate instanceof Integer){
-			DAsValueNew.append("<member><name>adjustmentDateRelative</name><value><i4>");
-			DAsValueNew.append(((Integer)expirydate));
-			DAsValueNew.append("</i4></value></member>");
-		}
-		else if(expirydate instanceof Date){
-			DAsValueNew.append("<member><name>expiryDate</name><value><dateTime.iso8601>");
-			DAsValueNew.append((new DateTime_iso8601()).format(((Date)expirydate),false));
-			DAsValueNew.append("</dateTime.iso8601></value></member>");
-		}
-		Object startdate=((DedicatedAccount)balanceAndDate).getStartDate();
-		if(startdate==null);
-		else if(startdate instanceof Integer){
-			DAsValueNew.append("<member><name>adjustmentStartDateRelative</name><value><i4>");
-			DAsValueNew.append(((Integer)startdate));
-			DAsValueNew.append("</i4></value></member>");
-		}
-		else if(startdate instanceof Date){
-			DAsValueNew.append("<member><name>startDate</name><value><dateTime.iso8601>");
-			DAsValueNew.append((new DateTime_iso8601()).format(((Date)startdate),false));
-			DAsValueNew.append("</dateTime.iso8601></value></member>");
-		}
 		
-		DAsValueNew.append("</struct></value>");
+		if(id==0){
+			mainAccountValue=new StringBuffer("");
+			if(relative){
+				mainAccountValue.append("<member><name>adjustmentAmountRelative</name><value><string>");
+				mainAccountValue.append(value);
+				mainAccountValue.append("</string></value></member>");
+			}
+			else{
+				mainAccountValue.append("<member><name>mainAccountValueNew</name><value><string>");
+				mainAccountValue.append(value);
+				mainAccountValue.append("</string></value></member>");
+			}	
+			if(expirydate==null);
+			else if(expirydate instanceof Integer){
+				mainAccountValue.append("<member><name>supervisionExpiryDateRelative</name><value><i4>");
+				mainAccountValue.append(((Integer)expirydate));
+				mainAccountValue.append("</i4></value></member>");
+			}
+			else if(expirydate instanceof Date){
+				mainAccountValue.append("<member><name>supervisionExpiryDate</name><value><dateTime.iso8601>");
+				mainAccountValue.append((new DateTime_iso8601()).format(((Date)expirydate),false));
+				mainAccountValue.append("</dateTime.iso8601></value></member>");
+			}
+			Object serviceFee = balanceAndDate.getServiceFee();
+			if(serviceFee==null);
+			else if(serviceFee instanceof Integer){
+				mainAccountValue.append("<member><name>serviceFeeExpiryDateRelative</name><value><i4>");
+				mainAccountValue.append(((Integer)serviceFee));
+				mainAccountValue.append("</i4></value></member>");
+			}
+			else if(serviceFee instanceof Date){
+				mainAccountValue.append("<member><name> serviceFeeExpiryDate</name><value><dateTime.iso8601>");
+				mainAccountValue.append((new DateTime_iso8601()).format(((Date)serviceFee),false));
+				mainAccountValue.append("</dateTime.iso8601></value></member>");
+			}
+		}
+
+		else{
+			if(relative){
+				DAsValueNew.append("<value><struct><member><name>dedicatedAccountID</name><value><i4>");
+				DAsValueNew.append(id);
+				DAsValueNew.append("</i4></value></member><member><name>adjustmentAmountRelative</name><value><string>");
+				DAsValueNew.append(value);
+				DAsValueNew.append("</string></value></member>");;
+			}
+			else{
+				DAsValueNew.append("<value><struct><member><name>dedicatedAccountID</name><value><i4>");
+				DAsValueNew.append(id);
+				DAsValueNew.append("</i4></value></member><member><name>dedicatedAccountValueNew</name><value><string>");
+				DAsValueNew.append(value);
+				DAsValueNew.append("</string></value></member>");
+			}
+			if(expirydate==null);
+			else if(expirydate instanceof Integer){
+				DAsValueNew.append("<member><name>adjustmentDateRelative</name><value><i4>");
+				DAsValueNew.append(((Integer)expirydate));
+				DAsValueNew.append("</i4></value></member>");
+			}
+			else if(expirydate instanceof Date){
+				DAsValueNew.append("<member><name>expiryDate</name><value><dateTime.iso8601>");
+				DAsValueNew.append((new DateTime_iso8601()).format(((Date)expirydate),false));
+				DAsValueNew.append("</dateTime.iso8601></value></member>");
+			}
+			Object startdate=((DedicatedAccount)balanceAndDate).getStartDate();
+			if(startdate==null);
+			else if(startdate instanceof Integer){
+				DAsValueNew.append("<member><name>adjustmentStartDateRelative</name><value><i4>");
+				DAsValueNew.append(((Integer)startdate));
+				DAsValueNew.append("</i4></value></member>");
+			}
+			else if(startdate instanceof Date){
+				DAsValueNew.append("<member><name>startDate</name><value><dateTime.iso8601>");
+				DAsValueNew.append((new DateTime_iso8601()).format(((Date)startdate),false));
+				DAsValueNew.append("</dateTime.iso8601></value></member>");
+			}
+			
+			DAsValueNew.append("</struct></value>");
+		}
 	}
-	}
+
 	if(DAsValueNew.length()!=0){
 		StringBuffer s1=new StringBuffer("<member><name>dedicatedAccountUpdateInformation</name><value><array><data>");
 		s1.append(DAsValueNew);

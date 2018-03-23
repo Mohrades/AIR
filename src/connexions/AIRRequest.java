@@ -85,8 +85,8 @@ public class AIRRequest {
 		return new UpdateSubscriberSegmentation().update(getConnection(),msisdn,accountGroupID,serviceOfferings,originOperatorID);
 	}
 
-	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
-		return new GetOffers().getData(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestedDedicatedAccountDeatilsFlag);
+	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
+		return new GetOffers().getData(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
 	}
 
 	public boolean updateOffer(String msisdn,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID){

@@ -11,7 +11,7 @@ import util.OfferInformation;
 
 public class GetOffers {
     
-    public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
+    public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
     	StringBuffer offerIDs=new StringBuffer("");
     	if(offerSelection!=null){
     	int nbre=offerSelection.length;
@@ -34,12 +34,12 @@ public class GetOffers {
     	}
     	
     	StringBuffer DedicatedAccountDeatilsFlag=new StringBuffer("");
-    	if(!requestedDedicatedAccountDeatilsFlag);
+    	if(!requestDedicatedAccountDetailsFlag);
     	else{
-    		DedicatedAccountDeatilsFlag.append("<member><name>requestedDedicatedAccountDeatilsFlag</name><value><boolean>1</boolean></value></member>");
+    		DedicatedAccountDeatilsFlag.append("<member><name>requestDedicatedAccountDetailsFlag</name><value><boolean>1</boolean></value></member>");
     	}
     	
-    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>BJDTSRVAPP001</string></value></member><member><name>originTransactionID</name><value><string>");
+    	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
     	requete.append(msisdn);
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
     	requete.append((new DateTime_iso8601()).format(new Date(),true));
@@ -59,20 +59,20 @@ public class GetOffers {
     	
 }
     
-    public HashSet<OfferInformation> getData(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestedDedicatedAccountDeatilsFlag){
+    public HashSet<OfferInformation> getData(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
     	HashSet<OfferInformation> data=new HashSet<OfferInformation>();
         
     	try{
     		if(air.isOpen()){
-    	    	StringBuffer requete = formerRequete(msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestedDedicatedAccountDeatilsFlag);
+    	    	StringBuffer requete = formerRequete(msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
     	    	requete.append("</struct></value></param></params></methodCall>");
     	    	String reponse=air.execute(requete.toString());
-    	    	Scanner sortie= new Scanner(reponse);
+    	    	@SuppressWarnings("resource")
+				Scanner sortie= new Scanner(reponse);
     	    	
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
-                    	sortie.close();
                         break;
                     }
                     else if(ligne.equals("<name>responseCode</name>")){
