@@ -1,11 +1,13 @@
 package test;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import connexions.AIRRequest;
 import util.AccountDetails;
 import util.AccumulatorInformation;
 import util.BalanceAndDate;
+import util.DedicatedAccount;
 import util.OfferInformation;
 
 public class DoSomething {
@@ -13,13 +15,24 @@ public class DoSomething {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String msisdn = "22997938994";
+		msisdn = "22967075745";
+		msisdn = "22967191973";
+		msisdn = "22962893693";
 
-		// HashSet<BalanceAndDate> balances = new HashSet<BalanceAndDate>();
-		// balances.add(new BalanceAndDate(0, 2500, 1));
+		Date expires = new Date();
+		expires.setHours(23);
+		expires.setMinutes(59);
+		expires.setSeconds(59);
+		expires.setDate(31);
+		expires.setMonth(4);
+		expires.setYear(118);
 
-		// boolean responseCode = new AIRRequest().updateBalanceAndDate(msisdn, balances, "TEST", "TEST", "ebafrique");
+		HashSet<BalanceAndDate> balances = new HashSet<BalanceAndDate>();
+		balances.add(new DedicatedAccount(260, 10, expires));
 
-		BalanceAndDate balance = new AIRRequest().getBalanceAndDate(msisdn, 0);
+		System.out.println(new AIRRequest().updateBalanceAndDate(msisdn, balances, "TEST", "TEST", "ebafrique"));
+
+		BalanceAndDate balance = new AIRRequest().getBalanceAndDate(msisdn, 260);
 		System.out.println(balance.getAccountID() + " " + balance.getAccountValue() + "  " + balance.getExpiryDate() + "  " + balance.getServiceFee());
 
 		AccountDetails accountDetails = new AIRRequest().getAccountDetails(msisdn);
@@ -36,12 +49,18 @@ public class DoSomething {
 
 		HashSet<AccumulatorInformation> accumulators = new AIRRequest().getAccumulators(msisdn, new int[][] {{1,1},{2,3}});
 		for (AccumulatorInformation ac : accumulators) {
-			System.out.println(ac.getAccumulatorID() + "  " + ac.getAccumulatorValue() + "  " + ac.getAccumulatorStartDate()  + "  " + ac.getAccumulatorEndDate());
+			System.out.println("ACC " + ac.getAccumulatorID() + "  " + ac.getAccumulatorValue() + "  " + ac.getAccumulatorStartDate()  + "  " + ac.getAccumulatorEndDate());
 		}
 
-		HashSet<OfferInformation> offers = new AIRRequest().getOffers(msisdn, new int[][] {{1,500}}, true, null, false);
+		// Date now = new Date();
+		// now.setDate(now.getDate() + 3);
+		// System.out.println(new AIRRequest().updateOffer(msisdn, 2, 1, 3, null, "ebafrique"));
+		// System.out.println(new AIRRequest().deleteOffer(msisdn, 2, "ebafrique"));
+
+		// HashSet<OfferInformation> offers = new AIRRequest().getOffers(msisdn, new int[][] {{2,500}}, false, "10000000", false);
+		HashSet<OfferInformation> offers = new AIRRequest().getOffers(msisdn, new int[][] {{2,500}}, false, null, false);
 		for (OfferInformation offer : offers) {
-			System.out.println(offer.getOfferID() + "  " + offer.getOfferType() + "  " + offer.getStartDate()  + "  " + offer.getExpiryDate());
+			System.out.println("OFF " + offer.getOfferID() + "  " + offer.getOfferType() + "  " + offer.getStartDate()  + "  " + offer.getExpiryDate());
 		}
 	}
 

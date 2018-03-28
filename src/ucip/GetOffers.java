@@ -13,19 +13,23 @@ public class GetOffers {
     
     public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
     	StringBuffer offerIDs=new StringBuffer("");
-    	if(offerSelection!=null){
-    	int nbre=offerSelection.length;
-    	offerIDs.append("<member><name>offerSelection</name><value><array><data>");
-        for (int i=0;i<nbre;i++){
-        	int[]range=offerSelection[i];
-        	offerIDs.append("<value><struct><member><name>offerIDFirst</name><value><i4>");
-        	offerIDs.append(range[0]);
-        	offerIDs.append("</i4></value></member><member><name>offerIDLast</name><value><i4>");
-        	offerIDs.append(range[1]);
-        	offerIDs.append("</i4></value></member></struct></value>");
-  }
-        offerIDs.append("</data></array></value></member>");  
+
+    	if(offerSelection!=null) {
+	    	int nbre=offerSelection.length;
+	    	offerIDs.append("<member><name>offerSelection</name><value><array><data>");
+	
+	        for (int i=0;i<nbre;i++) {
+	        	int[]range=offerSelection[i];
+	        	offerIDs.append("<value><struct><member><name>offerIDFirst</name><value><i4>");
+	        	offerIDs.append(range[0]);
+	        	offerIDs.append("</i4></value></member><member><name>offerIDLast</name><value><i4>");
+	        	offerIDs.append(range[1]);
+	        	offerIDs.append("</i4></value></member></struct></value>");
+	        }
+	
+	        offerIDs.append("</data></array></value></member>");
         }
+
     	StringBuffer RequestedTypeFlag=new StringBuffer("");
     	if(offerRequestedTypeFlag!=null){
     		RequestedTypeFlag.append("<member><name>offerRequestedTypeFlag</name><value><string>");
@@ -69,7 +73,7 @@ public class GetOffers {
     	    	String reponse=air.execute(requete.toString());
     	    	@SuppressWarnings("resource")
 				Scanner sortie= new Scanner(reponse);
-    	    	
+
                 while(true){
                     String ligne=sortie.nextLine();
                     if(ligne==null) {

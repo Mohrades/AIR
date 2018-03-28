@@ -50,7 +50,15 @@ public class AIRRequest {
 	}
 
 	public AIRConnector getConnection() {
-		return new AIRConnector("192.168.3.176", 10010, 5);
+		AIRConnector air = new AIRConnector("10.10.5.149", 10010, 5);
+		if(air.isOpen()) return air;
+		
+		else {
+			air = new AIRConnector("192.168.3.176", 10010, 5);
+			if(air.isOpen()) return air;
+		}
+
+		return new AIRConnector("10.10.5.153", 10010, 5);
 	}
 
 	public BalanceAndDate getBalanceAndDate(String msisdn, int dedicatedAccountID){
