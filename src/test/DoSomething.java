@@ -30,7 +30,7 @@ public class DoSomething {
 		HashSet<BalanceAndDate> balances = new HashSet<BalanceAndDate>();
 		balances.add(new DedicatedAccount(260, 10, expires));
 
-		System.out.println(new AIRRequest().updateBalanceAndDate(msisdn, balances, "TEST", "TEST", "ebafrique"));
+		// System.out.println(new AIRRequest().updateBalanceAndDate(msisdn, balances, "TEST", "TEST", "ebafrique"));
 
 		BalanceAndDate balance = new AIRRequest().getBalanceAndDate(msisdn, 260);
 		System.out.println(balance.getAccountID() + " " + balance.getAccountValue() + "  " + balance.getExpiryDate() + "  " + balance.getServiceFee());
