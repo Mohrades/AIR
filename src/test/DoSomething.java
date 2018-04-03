@@ -19,7 +19,7 @@ public class DoSomething {
 		msisdn = "22967191973";
 		msisdn = "22966857792";
 		msisdn = "22997379819";
-		// msisdn = "22966857792";
+		msisdn = "22966857792";
 		msisdn = "22962893693";
 
 		Date expires = new Date();
