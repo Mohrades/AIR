@@ -1,5 +1,6 @@
 package ucip;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -44,7 +45,7 @@ public class GetOffers {
     	}
     	
     	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
-    	requete.append(msisdn);
+    	requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
     	requete.append((new DateTime_iso8601()).format(new Date(),true));
     	requete.append("</dateTime.iso8601></value></member><member><name>subscriberNumberNAI</name><value><int>1</int></value></member>");
@@ -74,7 +75,7 @@ public class GetOffers {
     	    	@SuppressWarnings("resource")
 				Scanner sortie= new Scanner(reponse);
 
-                while(true){
+                while(true) {
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
                         break;

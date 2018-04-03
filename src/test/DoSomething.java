@@ -17,6 +17,9 @@ public class DoSomething {
 		String msisdn = "22997938994";
 		msisdn = "22967075745";
 		msisdn = "22967191973";
+		msisdn = "22966857792";
+		msisdn = "22997379819";
+		// msisdn = "22966857792";
 		msisdn = "22962893693";
 
 		Date expires = new Date();
@@ -28,11 +31,11 @@ public class DoSomething {
 		expires.setYear(118);
 
 		HashSet<BalanceAndDate> balances = new HashSet<BalanceAndDate>();
-		balances.add(new DedicatedAccount(260, 10, expires));
+		balances.add(new DedicatedAccount(261, 0, expires));
 
 		// System.out.println(new AIRRequest().updateBalanceAndDate(msisdn, balances, "TEST", "TEST", "ebafrique"));
 
-		BalanceAndDate balance = new AIRRequest().getBalanceAndDate(msisdn, 260);
+		BalanceAndDate balance = new AIRRequest().getBalanceAndDate(msisdn, 263);
 		System.out.println(balance.getAccountID() + " " + balance.getAccountValue() + "  " + balance.getExpiryDate() + "  " + balance.getServiceFee());
 
 		AccountDetails accountDetails = new AIRRequest().getAccountDetails(msisdn);

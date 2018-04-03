@@ -1,5 +1,6 @@
 package acip;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -21,7 +22,7 @@ public class DeletePeriodicAccountManagementData {
 		requete.append("<member><name>originTimeStamp</name><value><dateTime.iso8601>");
 		requete.append((new DateTime_iso8601()).format(new Date(),true));
 		requete.append("</dateTime.iso8601></value></member><member><name>originTransactionID</name><value><string>");
-		requete.append(msisdn);
+		requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
 		requete.append("</string></value></member><member><name>pamInformationList</name><value><array><data><value><struct><member><name>pamClassID</name><value><i4>");
 		requete.append(pamClassID);
 		requete.append("</i4></value></member><member><name>pamServiceID</name><value><i4>");
