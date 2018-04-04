@@ -46,7 +46,7 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
     	    	   BalanceAndDate balanceAndDate=new BalanceAndDate();
     	           balanceAndDate.setRelative(false);
     	    	   balanceAndDate.setAccountID(0);
-    	            while(true){
+    	            while(true) {
     	                String ligne=sortie.nextLine();
     	                if(ligne==null) {
     	                    break;

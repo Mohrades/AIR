@@ -69,7 +69,13 @@ public class AIRConnector {
             String reponse = "";
             byte[] lecteur = new byte[1024];
 
+            int timeout = 0;
             while (in.available() == 0){
+            	timeout += sleep;
+            	if(timeout >= 30000) {
+            		return "";
+            	}
+
             	Thread.sleep(sleep);
             }
 

@@ -21,11 +21,12 @@ public class DateTime_iso8601 {
         // TODO Auto-generated method stub
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 	String timestamp=dateFormat.format(date)+"T";
+
 	if(time){
 		dateFormat = new SimpleDateFormat("HH:mm:ssZ");
 		timestamp+=dateFormat.format(date);
 	}
-    else{
+    else {
     	date.setHours(12);
     	date.setMinutes(0);
     	date.setSeconds(0);
@@ -37,10 +38,16 @@ public class DateTime_iso8601 {
     }
     
     public Date parse(String date){
-        date=date.replaceFirst("T","");
+        date = date.replaceFirst("T","");
+        if(date.endsWith("12:00:00+0000")) {
+        	date = date.replace("12:00:00+0000", "23:59:59+0100");
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHH:mm:ssZ");
+
         try {
             return dateFormat.parse(date);
+
         } catch (ParseException ex) {
             Logger.getLogger(DateTime_iso8601.class.getName()).log(Level.SEVERE, null, ex);
             return null;
