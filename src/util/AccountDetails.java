@@ -15,28 +15,28 @@ public class AccountDetails {
     private HashMap<String,String> details;
     
     public AccountDetails(HashMap<String,String> details){
-        this.details=details;
+        this.details = details;
     }
-    
-    public int getServiceClassCurrent(){
+
+    public int getServiceClassCurrent() {
         return Integer.parseInt(details.get("serviceClassCurrent"));
     }
-    public int getAccountGroupID(){
+    public int getAccountGroupID() {
         return Integer.parseInt(details.get("accountGroupID"));
     }
-    public Date getActivationDate(){
+    public Date getActivationDate() {
         return (new DateTime_iso8601()).parse(details.get("activationDate"));
     }
-    public Date getSupervisionExpiryDate(){
+    public Date getSupervisionExpiryDate() {
         return (new DateTime_iso8601()).parse(details.get("supervisionExpiryDate"));
     }
-    public boolean isAccountFlags(){
+    public boolean isAccountFlags() {
         return details.get("accountFlags").equals("1") ? true :  false;
     }
-    public int getLanguageIDCurrent(){
+    public int getLanguageIDCurrent() {
         return Integer.parseInt(details.get("languageIDCurrent"));
     }
-    public int[] getCommunityInformationCurrent(){
+    public int[] getCommunityInformationCurrent() {
     	try{
 	        String []chaine=details.get("communityIDs").split("-");
 	        int len=chaine.length;
@@ -48,16 +48,16 @@ public class AccountDetails {
 	        
 	        return communityIDs;
 
-        } catch(NumberFormatException e){
+        } catch(NumberFormatException e) {
             return null;
             
-        } catch(NullPointerException e){
+        } catch(NullPointerException e) {
     		return null;
     		
     	}
     }
 
-    public ServiceOfferings getServiceOfferings(){
+    public ServiceOfferings getServiceOfferings() {
     	ServiceOfferings serviceOfferings = new ServiceOfferings();
 
         String []chaine=details.get("serviceOfferings").split(" ");
@@ -70,11 +70,11 @@ public class AccountDetails {
         return serviceOfferings;
     }
 
-    public int getServiceClassOriginal(){
-        try{
+    public int getServiceClassOriginal() {
+        try {
         	return Integer.parseInt(details.get("serviceClassOriginal"));
         	
-        } catch(NumberFormatException e){
+        } catch(NumberFormatException e) {
             return -1;
             
         } catch(NullPointerException e) {

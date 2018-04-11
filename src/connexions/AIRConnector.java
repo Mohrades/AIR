@@ -70,9 +70,9 @@ public class AIRConnector {
             byte[] lecteur = new byte[1024];
 
             int timeout = 0;
-            while (in.available() == 0){
+            while (in.available() == 0) {
             	timeout += sleep;
-            	if(timeout >= 30000) {
+            	if(timeout >= 3000) {
             		return "";
             	}
 

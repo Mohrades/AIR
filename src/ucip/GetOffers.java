@@ -12,7 +12,7 @@ import util.OfferInformation;
 
 public class GetOffers {
     
-    public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
+    public StringBuffer formerRequete(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag) {
     	StringBuffer offerIDs=new StringBuffer("");
 
     	if(offerSelection!=null) {
@@ -47,28 +47,28 @@ public class GetOffers {
     	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>GetOffers</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
     	requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
-    	requete.append((new DateTime_iso8601()).format(new Date(),true));
+    	requete.append((new DateTime_iso8601()).format(new Date()));
     	requete.append("</dateTime.iso8601></value></member><member><name>subscriberNumberNAI</name><value><int>1</int></value></member>");
     	requete.append("<member><name>subscriberNumber</name><value><string>");
     	requete.append(msisdn);
     	requete.append("</string></value></member>");
+
     	if(requestInactiveOffersFlag){
     		requete.append("<member><name>requestInactiveOffersFlag</name><value><boolean>1</boolean></value></member>");
     	}
-	
+
     	requete.append(offerIDs);
     	requete.append(RequestedTypeFlag);
     	requete.append(DedicatedAccountDeatilsFlag);
-    	
+
     	return requete;
-    	
-}
+    }
     
-    public HashSet<OfferInformation> getData(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
+    public HashSet<OfferInformation> getData(AIRConnector air, String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag) {
     	HashSet<OfferInformation> data=new HashSet<OfferInformation>();
-        
-    	try{
-    		if(air.isOpen()){
+
+    	try {
+    		if(air.isOpen()) {
     	    	StringBuffer requete = formerRequete(msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
     	    	requete.append("</struct></value></param></params></methodCall>");
     	    	String reponse=air.execute(requete.toString());
@@ -129,9 +129,9 @@ public class GetOffers {
                    }
                 }
     		}
-                }
-        catch(NoSuchElementException ex){
-        	
+
+        } catch(NoSuchElementException ex) {
+
         } finally {
            	air.fermer();
 

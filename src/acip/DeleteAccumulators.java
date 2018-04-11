@@ -26,7 +26,7 @@ public class DeleteAccumulators {
     		accumulatorIDs.append("</int></value></member>");
     		if(accumulator.getAccumulatorEndDate()!=null){
     			accumulatorIDs.append("<member><name>accumulatorEndDate</name><value><dateTime.iso8601>");
-    			accumulatorIDs.append((new DateTime_iso8601()).format(accumulator.getAccumulatorEndDate(),false));
+    			accumulatorIDs.append((new DateTime_iso8601()).format(accumulator.getAccumulatorEndDate()));
     			accumulatorIDs.append("</dateTime.iso8601></value></member>");
     		}
     		accumulatorIDs.append("</struct></value>");
@@ -39,7 +39,7 @@ public class DeleteAccumulators {
     	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>DeleteAccumulators</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
     	requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
     	requete.append("</string></value></member><member><name>originTimeStamp</name><value><dateTime.iso8601>");
-    	requete.append((new DateTime_iso8601()).format(new Date(),true));
+    	requete.append((new DateTime_iso8601()).format(new Date()));
     	requete.append("</dateTime.iso8601></value></member><member><name>subscriberNumberNAI</name><value><int>1</int></value></member>");
     	requete.append("<member><name>subscriberNumber</name><value><string>");
     	requete.append(msisdn);

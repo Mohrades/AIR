@@ -20,7 +20,7 @@ public class DeletePeriodicAccountManagementData {
 		        }
 
 		requete.append("<member><name>originTimeStamp</name><value><dateTime.iso8601>");
-		requete.append((new DateTime_iso8601()).format(new Date(),true));
+		requete.append((new DateTime_iso8601()).format(new Date()));
 		requete.append("</dateTime.iso8601></value></member><member><name>originTransactionID</name><value><string>");
 		requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
 		requete.append("</string></value></member><member><name>pamInformationList</name><value><array><data><value><struct><member><name>pamClassID</name><value><i4>");
