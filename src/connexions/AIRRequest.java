@@ -45,12 +45,14 @@ import util.UsageThreshold;
 
 public class AIRRequest {
 
+	private boolean successfully;
+
 	public AIRRequest() {
 
 	}
 
 	public AIRConnector getConnection() {
-		AIRConnector air = new AIRConnector("192.168.3.176", 10010, 5);
+		/*AIRConnector air = new AIRConnector("192.168.3.176", 10010, 5);
 		if(air.isOpen()) return air;
 
 		else {
@@ -58,118 +60,248 @@ public class AIRRequest {
 			if(air.isOpen()) return air;
 		}
 
-		return new AIRConnector("10.10.5.149", 10010, 5);
+		return new AIRConnector("10.10.5.149", 10010, 5);*/
+
+		AIRConnector air = new AIRConnector("10.10.5.157", 10010, 5);
+		if(air.isOpen()) return air;
+
+		else {
+			air = new AIRConnector("10.10.5.158", 10010, 5);
+			if(air.isOpen()) return air;
+		}
+
+		return new AIRConnector("10.10.40.96", 10010, 5);
 	}
 
-	public BalanceAndDate getBalanceAndDate(String msisdn, int dedicatedAccountID){
-		return new GetBalanceAndDate().getData(getConnection(), msisdn,dedicatedAccountID);	
+	public boolean isSuccessfully() {
+		return successfully;
 	}
 
-	public boolean updateBalanceAndDate(String msisdn, HashSet<BalanceAndDate> balancesAndDates, String transactionType, String transactionCode, String originOperatorID){
-		return new UpdateBalanceAndDate().update(getConnection(), msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);	
+	public void setSuccessfully(boolean successfully) {
+		this.successfully = successfully;
 	}
 
-	public boolean updateServiceClass(String msisdn,String serviceClassAction,int serviceClassNew,int serviceClassTemporaryNew,Date serviceClassTemporaryNewExpiryDate,String originOperatorID){
-		return  new UpdateServiceClass().update(getConnection(), msisdn,serviceClassAction,serviceClassNew,serviceClassTemporaryNew,serviceClassTemporaryNewExpiryDate,originOperatorID);
+	public BalanceAndDate getBalanceAndDate(String msisdn, int dedicatedAccountID) {
+		AIRConnector air = getConnection();
+
+		BalanceAndDate result = new GetBalanceAndDate().getData(air, msisdn,dedicatedAccountID);
+		setSuccessfully(air.isAvailable());
+
+		return result;
 	}
 
-	public AccountDetails getAccountDetails(String msisdn){
-		return new GetAccountDetails().getData(getConnection(), msisdn);
+	public boolean updateBalanceAndDate(String msisdn, HashSet<BalanceAndDate> balancesAndDates, String transactionType, String transactionCode, String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateBalanceAndDate().update(getConnection(), msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public HashSet<AccumulatorInformation> getAccumulators(String msisdn,int[][]accumulatorSelection){
-		return new GetAccumulators().getData(getConnection(), msisdn,accumulatorSelection);
+	public boolean updateServiceClass(String msisdn,String serviceClassAction,int serviceClassNew,int serviceClassTemporaryNew,Date serviceClassTemporaryNewExpiryDate,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateServiceClass().update(getConnection(), msisdn,serviceClassAction,serviceClassNew,serviceClassTemporaryNew,serviceClassTemporaryNewExpiryDate,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public FaFList getFaFList (String msisdn,int requestedOwner){
-		return new GetFaFList().getData(getConnection(), msisdn,requestedOwner);		
+	public AccountDetails getAccountDetails(String msisdn) {
+		AIRConnector air = getConnection();
+
+		AccountDetails result = new GetAccountDetails().getData(getConnection(), msisdn);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateCommunityList(String msisdn,int[] communityOldIDs,int[] communityNewIDs,String originOperatorID){
-		return new UpdateCommunityList().update(getConnection(), msisdn,communityOldIDs,communityNewIDs,originOperatorID);
+	public HashSet<AccumulatorInformation> getAccumulators(String msisdn,int[][]accumulatorSelection) {
+		AIRConnector air = getConnection();
+
+		HashSet<AccumulatorInformation> result = new GetAccumulators().getData(getConnection(), msisdn,accumulatorSelection);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateSubscriberSegmentation(String msisdn,Integer accountGroupID,ServiceOfferings serviceOfferings,String originOperatorID){
-		return new UpdateSubscriberSegmentation().update(getConnection(),msisdn,accountGroupID,serviceOfferings,originOperatorID);
+	public FaFList getFaFList (String msisdn,int requestedOwner) {
+		AIRConnector air = getConnection();
+
+		FaFList result = new GetFaFList().getData(getConnection(), msisdn,requestedOwner);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag){
-		return new GetOffers().getData(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
+	public boolean updateCommunityList(String msisdn,int[] communityOldIDs,int[] communityNewIDs,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateCommunityList().update(getConnection(), msisdn,communityOldIDs,communityNewIDs,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateOffer(String msisdn,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID){
-		return new UpdateOffer().update(getConnection(), msisdn, offerID,startDate,expiryDate,offerType,originOperatorID);
+	public boolean updateSubscriberSegmentation(String msisdn, Integer accountGroupID, ServiceOfferings serviceOfferings, String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateSubscriberSegmentation().update(getConnection(),msisdn,accountGroupID,serviceOfferings,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deleteOffer(String msisdn,int offerID,String originOperatorID) {
-		return new DeleteOffer().delete(getConnection(), msisdn, offerID,originOperatorID);
+	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag) {
+		AIRConnector air = getConnection();
+
+		HashSet<OfferInformation> result = new GetOffers().getData(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public HashSet<UsageCounterUsageThresholdInformation> getUsageThresholdsAndCounters(String msisdn,String originOperatorID){
-		return new GetUsageThresholdsAndCounters().getData(getConnection(), msisdn,originOperatorID);
+	public boolean updateOffer(String msisdn,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result =  new UpdateOffer().update(getConnection(), msisdn, offerID,startDate,expiryDate,offerType,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateUsageThresholdsAndCounters(String msisdn,HashSet<UsageCounterUsageThresholdInformation> usageCounterUpdateInformation,HashSet<UsageThreshold>usageThresholdUpdateInformation,String originOperatorID){
-		return new UpdateUsageThresholdsAndCounters().update(getConnection(), msisdn,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
+	public boolean deleteOffer(String msisdn, int offerID, String originOperatorID, boolean acceptOfferNotFound) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeleteOffer().delete(getConnection(), msisdn, offerID, originOperatorID, acceptOfferNotFound);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateFaFList(String msisdn,String fafAction,FaFList fafInformation,String originOperatorID){
-		return new UpdateFaFList().update(getConnection(), msisdn, fafAction, fafInformation,originOperatorID);
+	public HashSet<UsageCounterUsageThresholdInformation> getUsageThresholdsAndCounters(String msisdn,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		HashSet<UsageCounterUsageThresholdInformation> result = new GetUsageThresholdsAndCounters().getData(getConnection(), msisdn,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deleteAccumulators(String msisdn,Integer serviceClassCurrent ,HashSet<AccumulatorInformation> accumulatorIdentifier,String originOperatorID){
-		return new DeleteAccumulators().delete(getConnection(), msisdn, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
+	public boolean updateUsageThresholdsAndCounters(String msisdn,HashSet<UsageCounterUsageThresholdInformation> usageCounterUpdateInformation,HashSet<UsageThreshold>usageThresholdUpdateInformation,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateUsageThresholdsAndCounters().update(getConnection(), msisdn,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deleteDedicatedAccounts(String msisdn,Integer serviceClassCurrent ,HashSet<DedicatedAccount> dedicatedAccountIdentifier,String originOperatorID){
-		return new DeleteDedicatedAccounts().delete(getConnection(), msisdn, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
+	public boolean updateFaFList(String msisdn,String fafAction,FaFList fafInformation,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateFaFList().update(getConnection(), msisdn, fafAction, fafInformation,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deleteUsageThresholds(String msisdn,HashSet<UsageThreshold> usageThresholds,String originOperatorID){
-		return new DeleteUsageThresholds().delete(getConnection(), msisdn, usageThresholds,originOperatorID);
+	public boolean deleteAccumulators(String msisdn,Integer serviceClassCurrent ,HashSet<AccumulatorInformation> accumulatorIdentifier,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeleteAccumulators().delete(getConnection(), msisdn, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public void getPromotionCounters(String msisdn){
+	public boolean deleteDedicatedAccounts(String msisdn,Integer serviceClassCurrent ,HashSet<DedicatedAccount> dedicatedAccountIdentifier,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeleteDedicatedAccounts().delete(getConnection(), msisdn, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
+	}
+
+	public boolean deleteUsageThresholds(String msisdn,HashSet<UsageThreshold> usageThresholds,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeleteUsageThresholds().delete(getConnection(), msisdn, usageThresholds,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
+	}
+
+	public void getPromotionCounters(String msisdn) {
+		AIRConnector air = getConnection();
+
 		new GetPromotionCounters().getData(getConnection(), msisdn);
+		setSuccessfully(air.isAvailable());
 	}
 
-	public HashSet<PromotionPlanInformation> getPromotionPlans(String msisdn,String originOperatorID){
-		return new GetPromotionPlans().getData(getConnection(), msisdn,originOperatorID);
+	public HashSet<PromotionPlanInformation> getPromotionPlans(String msisdn,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		HashSet<PromotionPlanInformation> result = new GetPromotionPlans().getData(getConnection(), msisdn,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updateAccumulators(String msisdn,HashSet<AccumulatorInformation> accumulatorUpdateInformation,String originOperatorID){
-		return new UpdateAccumulators().update(getConnection(), msisdn, accumulatorUpdateInformation,originOperatorID);
+	public boolean updateAccumulators(String msisdn,HashSet<AccumulatorInformation> accumulatorUpdateInformation,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdateAccumulators().update(getConnection(), msisdn, accumulatorUpdateInformation,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean updatePromotionPlan(String msisdn,String promotionPlanAction,PromotionPlanInformation promotionPlanNew,PromotionPlanInformation promotionPlanOld,String originOperatorID){
-		return new UpdatePromotionPlan().update(getConnection(), msisdn, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
+	public boolean updatePromotionPlan(String msisdn,String promotionPlanAction,PromotionPlanInformation promotionPlanNew,PromotionPlanInformation promotionPlanOld,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdatePromotionPlan().update(getConnection(), msisdn, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean installSubscriber (String msisdn,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID){
-		return new InstallSubscriber().install(getConnection(), msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
+	public boolean installSubscriber (String msisdn,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new InstallSubscriber().install(getConnection(), msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean linkSubordinateSubscriber (String msisdn,String masterAccountNumber,String originOperatorID){
-		return new LinkSubordinateSubscriber().link(getConnection(), msisdn, masterAccountNumber, originOperatorID);
+	public boolean linkSubordinateSubscriber (String msisdn,String masterAccountNumber,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new LinkSubordinateSubscriber().link(getConnection(), msisdn, masterAccountNumber, originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean refill(String msisdn,String transactionAmount,String transactionCurrency,String refillProfileID,String voucherActivationCode,String transactionType,String transactionCode,String originOperatorID){
-		return new Refill().update(getConnection(), msisdn,transactionAmount,transactionCurrency,refillProfileID,voucherActivationCode,originOperatorID,transactionType,transactionCode);
+	public boolean refill(String msisdn,String transactionAmount,String transactionCurrency,String refillProfileID,String voucherActivationCode,String transactionType,String transactionCode,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new Refill().update(getConnection(), msisdn,transactionAmount,transactionCurrency,refillProfileID,voucherActivationCode,originOperatorID,transactionType,transactionCode);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deleteSubscriber(String msisdn,String originOperatorID){
-		return new DeleteSubscriber().delete(getConnection(), msisdn,originOperatorID);
+	public boolean deleteSubscriber(String msisdn,String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeleteSubscriber().delete(getConnection(), msisdn,originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean addPAM(String msisdn, String pamClassID, String pamServiceID, String pamScheduleID, String originOperatorID){
-		return new AddPeriodicAccountManagementData().add(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+	public boolean addPAM(String msisdn, String pamClassID, String pamServiceID, String pamScheduleID, String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean deletePAM(String msisdn, int pamClassID, int pamServiceID, int pamScheduleID, String originOperatorID){
-		return new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+	public boolean deletePAM(String msisdn, int pamClassID, int pamServiceID, int pamScheduleID, String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 
-	public boolean runPAM(String msisdn, int pamServiceID, String originOperatorID ){
-		return new RunPeriodicAccountManagement().run(getConnection(), msisdn,originOperatorID, pamServiceID);
+	public boolean runPAM(String msisdn, int pamServiceID, String originOperatorID ) {
+		AIRConnector air = getConnection();
+
+		boolean result = new RunPeriodicAccountManagement().run(getConnection(), msisdn,originOperatorID, pamServiceID);
+		setSuccessfully(air.isAvailable());
+		return result;
 	}
 }

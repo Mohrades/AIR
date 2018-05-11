@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class FaFList {
 	private Date fafChangeUnbarDate;
     private boolean fafMaxAllowedNumbersReachedFlag;
-    private HashSet<FafInformation>fafInformationList=new HashSet<FafInformation>();
+    private HashSet<FafInformation>fafInformationList = new HashSet<FafInformation>();
     
 	public Date getFafChangeUnbarDate() {
 		return fafChangeUnbarDate;
@@ -26,8 +26,7 @@ public class FaFList {
 	public boolean isFafMaxAllowedNumbersReachedFlag() {
 		return fafMaxAllowedNumbersReachedFlag;
 	}
-	public void setFafMaxAllowedNumbersReachedFlag(
-			boolean fafMaxAllowedNumbersReachedFlag) {
+	public void setFafMaxAllowedNumbersReachedFlag(boolean fafMaxAllowedNumbersReachedFlag) {
 		this.fafMaxAllowedNumbersReachedFlag = fafMaxAllowedNumbersReachedFlag;
 	}
 	public FaFList(HashSet<FafInformation> fafInformationList){

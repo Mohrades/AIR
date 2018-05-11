@@ -20,10 +20,10 @@ import util.ServiceOfferings;
  */
 public class UpdateSubscriberSegmentation {
 
-    public StringBuffer formerRequete(String msisdn,Integer accountGroupID,ServiceOfferings serviceOfferings,String originOperatorID){
+    public StringBuffer formerRequete(String msisdn,Integer accountGroupID,ServiceOfferings serviceOfferings,String originOperatorID) {
     	StringBuffer groupID=new StringBuffer("");
-        if(accountGroupID==null);
-        else{
+        if(accountGroupID == null);
+        else {
             groupID.append("<member><name>accountGroupID</name><value><i4>");
             groupID.append(accountGroupID);
             groupID.append("</i4></value></member>");
@@ -31,13 +31,13 @@ public class UpdateSubscriberSegmentation {
         
         HashSet<Integer> offerings=serviceOfferings.getServiceOfferingActiveFlags();
         StringBuffer serviceOffering=new StringBuffer("<member><name>serviceOfferings</name><value><array><data>");
-        for (Integer id:offerings){
+        for (Integer id:offerings) {
 
         	int value = 0;
-        	if(id<0){
+        	if(id < 0) {
         		id=-id;
         	}
-        	else value=1;
+        	else value = 1;
 
             serviceOffering.append("<value><struct><member><name>serviceOfferingActiveFlag</name><value><boolean>");
             serviceOffering.append(value);
@@ -71,18 +71,18 @@ public class UpdateSubscriberSegmentation {
     	boolean responseCode = false;
     	
     	try{
-    	if(air.isOpen()){
-        	StringBuffer requete = formerRequete(msisdn,accountGroupID,serviceOfferings,originOperatorID);
+    	if(air.isOpen()) {
+        	StringBuffer requete = formerRequete(msisdn, accountGroupID, serviceOfferings, originOperatorID);
         	requete.append("</struct></value></param></params></methodCall>");
-            String reponse=air.execute(requete.toString());
+            String reponse = air.execute(requete.toString());
             @SuppressWarnings("resource")
 			Scanner sortie= new Scanner(reponse);
-                while(true){
+                while(true) {
                     String ligne=sortie.nextLine();
                     if(ligne==null) {
                         break;
                     }
-                    else if(ligne.equals("<name>responseCode</name>")){
+                    else if(ligne.equals("<name>responseCode</name>")) {
                         String code_reponse=sortie.nextLine();
                         int last=code_reponse.indexOf("</i4></value>");
                         responseCode = Integer.parseInt(code_reponse.substring(11, last))==0;

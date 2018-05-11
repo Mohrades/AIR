@@ -22,7 +22,8 @@ public class DoSomething {
 		msisdn = "22966857792";
 		msisdn = "22962893693";
 		msisdn = "22961437066";
-		// msisdn = "22961000002";
+		msisdn = "22961000002";
+		msisdn = "22961437066";
 
 		Date expires = new Date();
 		expires.setHours(23);

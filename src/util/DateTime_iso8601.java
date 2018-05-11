@@ -16,7 +16,7 @@ public class DateTime_iso8601 {
 
     public String format(Date date) {
         // TODO Auto-generated method stub
-    	String timestamp = (new SimpleDateFormat("yyyyMMdd'T'HH:mm:ssZ")).format(new Date());
+    	String timestamp = (new SimpleDateFormat("yyyyMMdd'T'HH:mm:ssZ")).format(date);
 
     	// date only
     	if(timestamp.endsWith("23:59:59+0100")) {

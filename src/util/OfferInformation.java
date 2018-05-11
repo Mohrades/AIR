@@ -7,6 +7,7 @@ public class OfferInformation {
 	private int offerID,offerType;
     private Date startDate,expiryDate;
     private LinkedList<Object[]> dedicatedAccountInformation;
+
     public OfferInformation(int offerID,int offerType,Date startDate,Date expiryDate,LinkedList<Object[]>dedicatedAccountInformation){
         this.expiryDate=expiryDate;
         this.offerID=offerID;

@@ -15,6 +15,8 @@ public class AIRConnector {
     private int sleep;
     private Socket socket;
 
+    private boolean available;
+
 	public AIRConnector(String ip, int port, int sleep) {
 		try {
 			this.sleep = sleep;
@@ -38,11 +40,18 @@ public class AIRConnector {
 		return (out == null) ? false : true;
 	}
 
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
 	public void fermer() {
 		try {
 			if(isOpen()){
 				socket.close();
-
 	    	}
 
 		} catch (IOException e) {
@@ -92,6 +101,7 @@ public class AIRConnector {
             int beginIndex=reponse.indexOf("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             reponse=reponse.substring(beginIndex);
 
+            setAvailable(true);
             return reponse;
 
         } catch (InterruptedException ex) {

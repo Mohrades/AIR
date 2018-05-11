@@ -5,11 +5,11 @@ import java.util.HashSet;
 public class ServiceOfferings {
 	HashSet<Integer> serviceOfferingActiveFlags = new HashSet<Integer>();
 
-	public ServiceOfferings(){
+	public ServiceOfferings() {
 
 	}
 
-	public void SetActiveFlag(Integer serviceOfferingID, boolean flag){
+	public void SetActiveFlag(Integer serviceOfferingID, boolean flag) {
 		// serviceOfferingID > 0, activeFlag = 1
 		// serviceOfferingID < 0, activeFlag = 0
 
@@ -26,7 +26,7 @@ public class ServiceOfferings {
 		getServiceOfferingActiveFlags().add(serviceOfferingActiveFlag);
 	}
 
-	public boolean isActiveFlag(Integer serviceOfferingID){
+	public boolean isActiveFlag(Integer serviceOfferingID) {
 		if(serviceOfferingActiveFlags.contains(serviceOfferingID)) return true;
 		else if(serviceOfferingActiveFlags.contains(-serviceOfferingID)) return false;
 		else return false;

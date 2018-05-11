@@ -109,25 +109,27 @@ public class GetAccountDetails {
                           int last=serviceClassTemporaryExpiryDate.indexOf("</dateTime.iso8601></value>");
                           details.put("serviceClassTemporaryExpiryDate",serviceClassTemporaryExpiryDate.substring(25, last));
                      }
-                     else if(ligne.equals("<name>supervisionExpiryDate</name>")){
+                     else if(ligne.equals("<name>supervisionExpiryDate</name>")) {
                           String supervisionExpiryDate=sortie.nextLine();
                           int last=supervisionExpiryDate.indexOf("</dateTime.iso8601></value>");
                           details.put("supervisionExpiryDate",supervisionExpiryDate.substring(25, last));
                      }
-                     else if(ligne.equals("<name>serviceOfferings</name>")){
+                     else if(ligne.equals("<name>serviceOfferings</name>")) {
                           String serviceOfferings="";
                           String check=sortie.nextLine();
-                          while(!check.equals("</array>")){
-                              if(check.equals("<name>serviceOfferingActiveFlag</name>")){
+
+                          while(!check.equals("</array>")) {
+                              if(check.equals("<name>serviceOfferingActiveFlag</name>")) {
                                   String flag=sortie.nextLine();
                                   int last=flag.indexOf("</boolean></value>");
                                   serviceOfferings+=(flag.substring(16,last)+" ");
                               }
-                              else if(check.equals("<name>serviceOfferingID</name>")){
+                              else if(check.equals("<name>serviceOfferingID</name>")) {
                                   String id=sortie.nextLine();
                                   int last=id.indexOf("</i4></value>");
                                   serviceOfferings+=(id.substring(11, last)+" ");
                               }
+
                           check=sortie.nextLine();  
                       }
                           int len=serviceOfferings.length();
