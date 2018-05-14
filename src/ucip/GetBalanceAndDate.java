@@ -129,7 +129,8 @@ public StringBuffer formerRequete(String msisdn, int dedicatedAccountID){
 
        }
 
-       return balance;
+    	if((dedicatedAccountID == 0) && (balance != null) && (balance.getExpiryDate() == null)) balance = null;
+    	return balance;
 }
 
 }
