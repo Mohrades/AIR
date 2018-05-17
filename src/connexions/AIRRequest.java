@@ -36,8 +36,9 @@ import util.AccountDetails;
 import util.AccumulatorInformation;
 import util.BalanceAndDate;
 import util.DedicatedAccount;
-import util.FaFList;
+import util.FafInformationList;
 import util.OfferInformation;
+import util.PamInformationList;
 import util.PromotionPlanInformation;
 import util.ServiceOfferings;
 import util.UsageCounterUsageThresholdInformation;
@@ -122,10 +123,10 @@ public class AIRRequest {
 		return result;
 	}
 
-	public FaFList getFaFList (String msisdn,int requestedOwner) {
+	public FafInformationList getFaFList (String msisdn, int requestedOwner) {
 		AIRConnector air = getConnection();
 
-		FaFList result = new GetFaFList().getData(getConnection(), msisdn,requestedOwner);
+		FafInformationList result = new GetFaFList().getData(getConnection(), msisdn,requestedOwner);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -186,7 +187,7 @@ public class AIRRequest {
 		return result;
 	}
 
-	public boolean updateFaFList(String msisdn,String fafAction,FaFList fafInformation,String originOperatorID) {
+	public boolean updateFaFList(String msisdn, String fafAction, FafInformationList fafInformation, String originOperatorID) {
 		AIRConnector air = getConnection();
 
 		boolean result = new UpdateFaFList().update(getConnection(), msisdn, fafAction, fafInformation,originOperatorID);
@@ -281,26 +282,26 @@ public class AIRRequest {
 		return result;
 	}
 
-	public boolean addPAM(String msisdn, String pamClassID, String pamServiceID, String pamScheduleID, String originOperatorID) {
+	public boolean addPeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn, pamInformationList, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean deletePAM(String msisdn, int pamClassID, int pamServiceID, int pamScheduleID, String originOperatorID) {
+	public boolean deletePeriodicAccountManagementData(String msisdn, PamInformationList pamInofmrationList, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamClassID, pamServiceID, pamScheduleID);
+		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamInofmrationList);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean runPAM(String msisdn, int pamServiceID, String originOperatorID ) {
+	public boolean runPeriodicAccountManagement(String msisdn, int pamServiceID, String originOperatorID ) {
 		AIRConnector air = getConnection();
 
-		boolean result = new RunPeriodicAccountManagement().run(getConnection(), msisdn,originOperatorID, pamServiceID);
+		boolean result = new RunPeriodicAccountManagement().run(getConnection(), msisdn, pamServiceID, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}

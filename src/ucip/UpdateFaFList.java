@@ -7,29 +7,30 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import util.DateTime_iso8601;
-import util.FaFList;
+import util.FafInformationList;
 import util.FafInformation;
 import connexions.AIRConnector;
 
 public class UpdateFaFList {
 
-    public StringBuffer formerRequete(String msisdn,String fafAction,FaFList fafInformation,String originOperatorID){
+    public StringBuffer formerRequete(String msisdn,String fafAction,FafInformationList fafInformation,String originOperatorID){
     	StringBuffer fafInformations = new StringBuffer("");
-    	HashSet<FafInformation>fafInformationList = fafInformation.getFafInformationList();
 
+    	HashSet<FafInformation> fafInformationList = fafInformation.getList();
     	int nbre=fafInformationList.size();
+
     	if(nbre==1) {
     		for(FafInformation faf:fafInformationList) {
-    		fafInformations.append("<member><name>fafInformation</name><value><struct><member><name>fafNumber</name><value><string>");
-    		fafInformations.append(faf.getFafNumber());
-    		fafInformations.append("</string></value></member><member><name>owner</name><value><string>");
-    		fafInformations.append(faf.getOwner());
-    		fafInformations.append("</string></value></member><member><name>fafIndicator</name><value><i4>");
-    		fafInformations.append(faf.getFafIndicator());
-    		fafInformations.append("</i4></value></member></struct></value></member>");
+	    		fafInformations.append("<member><name>fafInformation</name><value><struct><member><name>fafNumber</name><value><string>");
+	    		fafInformations.append(faf.getFafNumber());
+	    		fafInformations.append("</string></value></member><member><name>owner</name><value><string>");
+	    		fafInformations.append(faf.getOwner());
+	    		fafInformations.append("</string></value></member><member><name>fafIndicator</name><value><i4>");
+	    		fafInformations.append(faf.getFafIndicator());
+	    		fafInformations.append("</i4></value></member></struct></value></member>");
     		}
     	}
-    	else{
+    	else {
     		fafInformations=new StringBuffer("<member><name>fafInformationList</name><value><array><data>");
 
     		for(FafInformation faf:fafInformationList){
@@ -53,22 +54,22 @@ public class UpdateFaFList {
     	requete.append("<member><name>subscriberNumber</name><value><string>");
     	requete.append(msisdn);
     	requete.append("</string></value></member>");
-    	if(originOperatorID!=null){
+
+    	if(originOperatorID!=null) {
         	requete.append("<member><name>originOperatorID</name><value><string>");
         	requete.append(originOperatorID);
         	requete.append("</string></value></member>");
-        	}
+        }
     	
     	requete.append("<member><name>fafAction</name><value><string>");
     	requete.append(fafAction);
     	requete.append("</string></value></member>");
     	requete.append(fafInformations);
     	
-    	return requete;
-								
+    	return requete;				
     }
     
-    public boolean update(AIRConnector air, String msisdn,String fafAction,FaFList fafInformation,String originOperatorID){
+    public boolean update(AIRConnector air, String msisdn,String fafAction,FafInformationList fafInformation,String originOperatorID){
     	boolean responseCode = false;
 
     	try{

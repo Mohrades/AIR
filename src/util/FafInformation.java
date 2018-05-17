@@ -22,7 +22,7 @@ public class FafInformation {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	public FafInformation(String fafNumber,int fafIndicator){
+	public FafInformation(String fafNumber,int fafIndicator) {
        this.fafIndicator=fafIndicator;
        this.fafNumber=fafNumber;
        setOwner(FafInformation.Subscriber);

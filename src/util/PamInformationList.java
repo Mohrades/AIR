@@ -1,34 +1,29 @@
 package util;
 
+import java.util.HashSet;
+
 public class PamInformationList {
+
+	private HashSet<PamUpdateInformation> list;
+
+	public PamInformationList() {
+		list = new HashSet<PamUpdateInformation>();
+	}
 	
-	private int pamServiceID;
-	private int pamClassID;
-	private int scheduleID;
-	public PamInformationList(int pamServiceID, int pamClassID, int scheduleID) {
-		super();
-		this.pamServiceID = pamServiceID;
-		this.pamClassID = pamClassID;
-		this.scheduleID = scheduleID;
+	public PamInformationList(HashSet<PamUpdateInformation> list) {
+		this.list = list;
 	}
-	public int getPamServiceID() {
-		return pamServiceID;
-	}
-	public void setPamServiceID(int pamServiceID) {
-		this.pamServiceID = pamServiceID;
-	}
-	public int getPamClassID() {
-		return pamClassID;
-	}
-	public void setPamClassID(int pamClassID) {
-		this.pamClassID = pamClassID;
-	}
-	public int getScheduleID() {
-		return scheduleID;
-	}
-	public void setScheduleID(int scheduleID) {
-		this.scheduleID = scheduleID;
+	
+	public void add(PamUpdateInformation pamUpdateInformation) {
+		if(list != null) list.add(pamUpdateInformation);
 	}
 
-	
+	public HashSet<PamUpdateInformation> getList() {
+		return list;
+	}
+
+	public void setList(HashSet<PamUpdateInformation> list) {
+		this.list = list;
+	}
+
 }

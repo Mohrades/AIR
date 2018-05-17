@@ -10,14 +10,15 @@ import util.DateTime_iso8601;
 
 public class RunPeriodicAccountManagement {
 	
-	public StringBuffer formerRequete(String msisdn,String originOperatorID, int pamServiceID){
-        
+	public StringBuffer formerRequete(String msisdn,String originOperatorID, int pamServiceID) {  
 		StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>RunPeriodicAccountManagement</methodName><params><param><value><struct><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originNodeType</name><value><string>EXT</string></value></member>");
-		if(originOperatorID!=null){
-					requete.append("<member><name>originOperatorID</name><value><string>");
-					requete.append(originOperatorID);
-					requete.append("</string></value></member>");
-				}
+
+		if(originOperatorID!=null) {
+			requete.append("<member><name>originOperatorID</name><value><string>");
+			requete.append(originOperatorID);
+			requete.append("</string></value></member>");
+		}
+
 		requete.append("<member><name>originTimeStamp</name><value><dateTime.iso8601>");
 		requete.append((new DateTime_iso8601()).format(new Date()));
 		requete.append("</dateTime.iso8601></value></member><member><name>originTransactionID</name><value><string>");
@@ -31,10 +32,10 @@ public class RunPeriodicAccountManagement {
 		return requete;
 } 
 
-public boolean run(AIRConnector air, String msisdn,String originOperatorID, int pamServiceID){
+public boolean run(AIRConnector air, String msisdn, int pamServiceID, String originOperatorID){
 	boolean responseCode = false;
-	
-	try{
+
+	try {
 	if(air.isOpen()) {
 		StringBuffer requete = formerRequete(msisdn,originOperatorID, pamServiceID);
 				String reponse=air.execute(requete.toString());

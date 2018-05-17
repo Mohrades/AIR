@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import connexions.AIRConnector;
 import util.DateTime_iso8601;
-import util.FaFList;
+import util.FafInformationList;
 import util.FafInformation;
 
 /**
@@ -37,13 +37,13 @@ public class GetFaFList {
                       
     	return requete;
 }
-    public FaFList getData(AIRConnector air, String msisdn,int requestedOwner){
-        HashSet<FafInformation>fafInformationList=new HashSet<FafInformation>();
+    public FafInformationList getData(AIRConnector air, String msisdn,int requestedOwner) {
+        HashSet<FafInformation> fafInformationList=new HashSet<FafInformation>();
         Date fafChangeUnbarDate = null;
         boolean fafMaxAllowedNumbersReachedFlag = false;
-        
-        try{
-        	if(air.isOpen()){
+
+        try {
+        	if(air.isOpen()) {
             	StringBuffer requete = formerRequete(msisdn,requestedOwner);
             	requete.append("</struct></value></param></params></methodCall>");    
                 String reponse=air.execute(requete.toString());
@@ -102,7 +102,7 @@ public class GetFaFList {
 
           }
 
-        FaFList fafList=new FaFList(fafInformationList);
+        FafInformationList fafList = new FafInformationList(fafInformationList);
         fafList.setFafChangeUnbarDate(fafChangeUnbarDate);
         fafList.setFafMaxAllowedNumbersReachedFlag(fafMaxAllowedNumbersReachedFlag);
         return fafList;
