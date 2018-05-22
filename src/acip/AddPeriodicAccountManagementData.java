@@ -8,28 +8,57 @@ import java.util.Scanner;
 
 import connexions.AIRConnector;
 import util.DateTime_iso8601;
+import util.PamInformation;
 import util.PamInformationList;
-import util.PamUpdateInformation;
 
 public class AddPeriodicAccountManagementData {
 
 	public StringBuffer formerRequete(String msisdn, PamInformationList pamInformationList, String originOperatorID){
     	StringBuffer pamInformations = new StringBuffer("");
 
-    	HashSet<PamUpdateInformation> list = pamInformationList.getList();
-    	pamInformations = new StringBuffer("<member><name>pamInformationList</name><value><array><data>");
+    	HashSet<PamInformation> list = pamInformationList.getList();
 
-		for(PamUpdateInformation pam : list){
-			pamInformations.append("<value><struct><member><name>pamUpdateInformation</name><value><struct><member><name>pamClassID</name><value><i4>");
-			pamInformations.append(pam.getPamClassID());
-			pamInformations.append("</i4></value></member><member><name>pamServiceID</name><value><i4>");
-			pamInformations.append(pam.getPamServiceID());
-			pamInformations.append("</i4></value></member><member><name>scheduleID</name><value><i4>");
-			pamInformations.append(pam.getScheduleID());
-			pamInformations.append("</i4></value></member></struct></value></member></struct></value>");
-		}
+    	if(list.size() > 0) {
+        	pamInformations = new StringBuffer("<member><name>pamInformationList</name><value><array><data>");
 
-		pamInformations.append("</data></array></value></member>");
+    		for(PamInformation pam : list) {
+    			pamInformations.append("<value><struct><member><name>pamClassID</name><value><i4>");
+    			pamInformations.append(pam.getPamClassID());
+    			pamInformations.append("</i4></value></member><member><name>pamServiceID</name><value><i4>");
+    			pamInformations.append(pam.getPamServiceID());
+    			pamInformations.append("</i4></value></member><member><name>scheduleID</name><value><i4>");
+    			pamInformations.append(pam.getScheduleID());
+    			pamInformations.append("</i4></value></member>");
+
+    			if(pam.getCurrentPamPeriod() != null) {
+    				pamInformations.append("<member><name>currentPamPeriod</name><value><string>");
+    				pamInformations.append(pam.getCurrentPamPeriod());
+    				pamInformations.append("</string></value></member>");
+    			}
+
+    			pamInformations.append("</struct></value>");
+    		}
+
+        	/*for(PamInformation pam : list) {
+    			pamInformations.append("<value><struct><member><name>pamInformation</name><value><struct><member><name>pamClassID</name><value><i4>");
+    			pamInformations.append(pam.getPamClassID());
+    			pamInformations.append("</i4></value></member><member><name>pamServiceID</name><value><i4>");
+    			pamInformations.append(pam.getPamServiceID());
+    			pamInformations.append("</i4></value></member><member><name>scheduleID</name><value><i4>");
+    			pamInformations.append(pam.getScheduleID());
+    			pamInformations.append("</i4></value></member>");
+    			
+    			if(pam.getCurrentPamPeriod() != null) {
+    				pamInformations.append("<member><name>currentPamPeriod</name><value><string>");
+    				pamInformations.append(pam.getCurrentPamPeriod());
+    				pamInformations.append("</string></value></member>");
+    			}
+
+    			pamInformations.append("</struct></value></member></struct></value>");
+    		}*/
+
+    		pamInformations.append("</data></array></value></member>");
+    	}
 
     	StringBuffer requete=new StringBuffer("<?xml version=\"1.0\"?><methodCall><methodName>AddPeriodicAccountManagementData</methodName><params><param><value><struct><member><name>originNodeType</name><value><string>EXT</string></value></member><member><name>originHostName</name><value><string>SRVPSAPP03mtnlocal</string></value></member><member><name>originTransactionID</name><value><string>");
     	requete.append((new SimpleDateFormat("yyMMddHHmmssS")).format(new Date()));
@@ -50,7 +79,7 @@ public class AddPeriodicAccountManagementData {
     	return requete;
 } 
 
-public boolean add(AIRConnector air, String msisdn, PamInformationList pamInformationList, String originOperatorID){
+public boolean add(AIRConnector air, String msisdn, PamInformationList pamInformationList, boolean acceptServiceIDAlreadyExist, String originOperatorID){
 	boolean responseCode = false;
 	
 	try{
@@ -60,16 +89,16 @@ public boolean add(AIRConnector air, String msisdn, PamInformationList pamInform
 		String reponse=air.execute(requete.toString());
 	    @SuppressWarnings("resource")
 		Scanner sortie = new Scanner(reponse);
-	        while(true){
+	        while(true) {
 	            String ligne=sortie.nextLine();
 	            if(ligne==null) {
 	                break;
 	            }
-	            else if(ligne.equals("<name>responseCode</name>")){
+	            else if(ligne.equals("<name>responseCode</name>")) {
 	                String code_reponse=sortie.nextLine();
 	                int last=code_reponse.indexOf("</i4></value>");
-	                responseCode = Integer.parseInt(code_reponse.substring(11, last)) == 0;
 
+	                responseCode = (Integer.parseInt(code_reponse.substring(11, last)) == 0) || ((acceptServiceIDAlreadyExist) && (Integer.parseInt(code_reponse.substring(11, last)) == 190));
 	                break;
 	            }
 	        }		

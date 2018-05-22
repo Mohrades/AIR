@@ -31,6 +31,7 @@ import acip.InstallSubscriber;
 import acip.LinkSubordinateSubscriber;
 import acip.RunPeriodicAccountManagement;
 import acip.UpdateAccumulators;
+import acip.UpdatePeriodicAccountManagementData;
 import acip.UpdatePromotionPlan;
 import util.AccountDetails;
 import util.AccumulatorInformation;
@@ -39,6 +40,7 @@ import util.DedicatedAccount;
 import util.FafInformationList;
 import util.OfferInformation;
 import util.PamInformationList;
+import util.PamUpdateInformationList;
 import util.PromotionPlanInformation;
 import util.ServiceOfferings;
 import util.UsageCounterUsageThresholdInformation;
@@ -282,18 +284,18 @@ public class AIRRequest {
 		return result;
 	}
 
-	public boolean addPeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, String originOperatorID) {
+	public boolean addPeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, boolean acceptServiceIDAlreadyExist, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn, pamInformationList, originOperatorID);
+		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn, pamInformationList, acceptServiceIDAlreadyExist, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean deletePeriodicAccountManagementData(String msisdn, PamInformationList pamInofmrationList, String originOperatorID) {
+	public boolean deletePeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, String originOperatorID, boolean acceptServiceIDNotExist) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn,originOperatorID, pamInofmrationList);
+		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn, pamInformationList, originOperatorID, acceptServiceIDNotExist);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -305,4 +307,13 @@ public class AIRRequest {
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
+
+	public boolean updatePeriodicAccountManagementData(String msisdn, PamUpdateInformationList pamUpdateInformationList, String originOperatorID) {
+		AIRConnector air = getConnection();
+
+		boolean result = new UpdatePeriodicAccountManagementData().update(getConnection(), msisdn, pamUpdateInformationList, originOperatorID);
+		setSuccessfully(air.isAvailable());
+		return result;
+	}
+
 }

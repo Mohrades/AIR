@@ -24,8 +24,6 @@ public class DoSomething {
 		msisdn = "22961437066";
 		msisdn = "22961000002";
 		msisdn = "22961437066";
-		
-		System.out.println("D".hashCode() + "   " + "d".hashCode());
 
 		Date expires = new Date();
 		expires.setHours(23);

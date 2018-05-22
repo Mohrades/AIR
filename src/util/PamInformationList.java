@@ -4,25 +4,25 @@ import java.util.HashSet;
 
 public class PamInformationList {
 
-	private HashSet<PamUpdateInformation> list;
+	private HashSet<PamInformation> list;
 
 	public PamInformationList() {
-		list = new HashSet<PamUpdateInformation>();
+		list = new HashSet<PamInformation>();
 	}
 	
-	public PamInformationList(HashSet<PamUpdateInformation> list) {
+	public PamInformationList(HashSet<PamInformation> list) {
 		this.list = list;
 	}
 	
-	public void add(PamUpdateInformation pamUpdateInformation) {
-		if(list != null) list.add(pamUpdateInformation);
+	public void add(PamInformation pamInformation) {
+		if(list != null) list.add(pamInformation);
 	}
 
-	public HashSet<PamUpdateInformation> getList() {
+	public HashSet<PamInformation> getList() {
 		return list;
 	}
 
-	public void setList(HashSet<PamUpdateInformation> list) {
+	public void setList(HashSet<PamInformation> list) {
 		this.list = list;
 	}
 

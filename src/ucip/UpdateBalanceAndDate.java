@@ -30,8 +30,8 @@ public StringBuffer formerRequete(String msisdn,HashSet<BalanceAndDate> balances
 		int id=balanceAndDate.getAccountID();
 		Object expirydate=balanceAndDate.getExpiryDate();
 		boolean relative=balanceAndDate.isRelative();
-		
-		if(id==0){
+
+		if(id==0) {
 			mainAccountValue=new StringBuffer("");
 			if(relative){
 				mainAccountValue.append("<member><name>adjustmentAmountRelative</name><value><string>");
