@@ -156,7 +156,7 @@ public boolean update(AIRConnector air, String msisdn, PamUpdateInformationList 
 		String reponse=air.execute(requete.toString());
 	    @SuppressWarnings("resource")
 		Scanner sortie = new Scanner(reponse);
-	        while(true){
+	        while(true) {
 	            String ligne=sortie.nextLine();
 	            if(ligne==null) {
 	                break;

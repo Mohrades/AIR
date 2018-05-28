@@ -96,7 +96,7 @@ public class AIRRequest {
 	public boolean updateBalanceAndDate(String msisdn, HashSet<BalanceAndDate> balancesAndDates, String transactionType, String transactionCode, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateBalanceAndDate().update(getConnection(), msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);
+		boolean result = new UpdateBalanceAndDate().update(air, msisdn,balancesAndDates,transactionType,transactionCode,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -104,7 +104,7 @@ public class AIRRequest {
 	public boolean updateServiceClass(String msisdn,String serviceClassAction,int serviceClassNew,int serviceClassTemporaryNew,Date serviceClassTemporaryNewExpiryDate,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateServiceClass().update(getConnection(), msisdn,serviceClassAction,serviceClassNew,serviceClassTemporaryNew,serviceClassTemporaryNewExpiryDate,originOperatorID);
+		boolean result = new UpdateServiceClass().update(air, msisdn,serviceClassAction,serviceClassNew,serviceClassTemporaryNew,serviceClassTemporaryNewExpiryDate,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -112,15 +112,15 @@ public class AIRRequest {
 	public AccountDetails getAccountDetails(String msisdn) {
 		AIRConnector air = getConnection();
 
-		AccountDetails result = new GetAccountDetails().getData(getConnection(), msisdn);
+		AccountDetails result = new GetAccountDetails().getData(air, msisdn);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public HashSet<AccumulatorInformation> getAccumulators(String msisdn,int[][]accumulatorSelection) {
+	public HashSet<AccumulatorInformation> getAccumulators(String msisdn, int[][]accumulatorSelection) {
 		AIRConnector air = getConnection();
 
-		HashSet<AccumulatorInformation> result = new GetAccumulators().getData(getConnection(), msisdn,accumulatorSelection);
+		HashSet<AccumulatorInformation> result = new GetAccumulators().getData(air, msisdn,accumulatorSelection);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -128,15 +128,15 @@ public class AIRRequest {
 	public FafInformationList getFaFList (String msisdn, int requestedOwner) {
 		AIRConnector air = getConnection();
 
-		FafInformationList result = new GetFaFList().getData(getConnection(), msisdn,requestedOwner);
+		FafInformationList result = new GetFaFList().getData(air, msisdn,requestedOwner);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean updateCommunityList(String msisdn,int[] communityOldIDs,int[] communityNewIDs,String originOperatorID) {
+	public boolean updateCommunityList(String msisdn,int[] communityOldIDs,int[] communityNewIDs, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateCommunityList().update(getConnection(), msisdn,communityOldIDs,communityNewIDs,originOperatorID);
+		boolean result = new UpdateCommunityList().update(air, msisdn, communityOldIDs, communityNewIDs, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -144,7 +144,7 @@ public class AIRRequest {
 	public boolean updateSubscriberSegmentation(String msisdn, Integer accountGroupID, ServiceOfferings serviceOfferings, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateSubscriberSegmentation().update(getConnection(),msisdn,accountGroupID,serviceOfferings,originOperatorID);
+		boolean result = new UpdateSubscriberSegmentation().update(air, msisdn, accountGroupID, serviceOfferings, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -152,7 +152,7 @@ public class AIRRequest {
 	public HashSet<OfferInformation> getOffers(String msisdn,int[][] offerSelection,boolean requestInactiveOffersFlag,String offerRequestedTypeFlag,boolean requestDedicatedAccountDetailsFlag) {
 		AIRConnector air = getConnection();
 
-		HashSet<OfferInformation> result = new GetOffers().getData(getConnection(), msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
+		HashSet<OfferInformation> result = new GetOffers().getData(air, msisdn, offerSelection,requestInactiveOffersFlag,offerRequestedTypeFlag, requestDedicatedAccountDetailsFlag);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -160,7 +160,7 @@ public class AIRRequest {
 	public boolean updateOffer(String msisdn,int offerID,Object startDate,Object expiryDate,Integer offerType,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result =  new UpdateOffer().update(getConnection(), msisdn, offerID,startDate,expiryDate,offerType,originOperatorID);
+		boolean result =  new UpdateOffer().update(air, msisdn, offerID,startDate,expiryDate,offerType,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -168,7 +168,7 @@ public class AIRRequest {
 	public boolean deleteOffer(String msisdn, int offerID, String originOperatorID, boolean acceptOfferNotFound) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeleteOffer().delete(getConnection(), msisdn, offerID, originOperatorID, acceptOfferNotFound);
+		boolean result = new DeleteOffer().delete(air, msisdn, offerID, originOperatorID, acceptOfferNotFound);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -176,7 +176,7 @@ public class AIRRequest {
 	public HashSet<UsageCounterUsageThresholdInformation> getUsageThresholdsAndCounters(String msisdn,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		HashSet<UsageCounterUsageThresholdInformation> result = new GetUsageThresholdsAndCounters().getData(getConnection(), msisdn,originOperatorID);
+		HashSet<UsageCounterUsageThresholdInformation> result = new GetUsageThresholdsAndCounters().getData(air, msisdn,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -184,7 +184,7 @@ public class AIRRequest {
 	public boolean updateUsageThresholdsAndCounters(String msisdn,HashSet<UsageCounterUsageThresholdInformation> usageCounterUpdateInformation,HashSet<UsageThreshold>usageThresholdUpdateInformation,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateUsageThresholdsAndCounters().update(getConnection(), msisdn,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
+		boolean result = new UpdateUsageThresholdsAndCounters().update(air, msisdn,usageCounterUpdateInformation,usageThresholdUpdateInformation,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -192,7 +192,7 @@ public class AIRRequest {
 	public boolean updateFaFList(String msisdn, String fafAction, FafInformationList fafInformation, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateFaFList().update(getConnection(), msisdn, fafAction, fafInformation,originOperatorID);
+		boolean result = new UpdateFaFList().update(air, msisdn, fafAction, fafInformation,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -200,7 +200,7 @@ public class AIRRequest {
 	public boolean deleteAccumulators(String msisdn,Integer serviceClassCurrent ,HashSet<AccumulatorInformation> accumulatorIdentifier,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeleteAccumulators().delete(getConnection(), msisdn, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
+		boolean result = new DeleteAccumulators().delete(air, msisdn, serviceClassCurrent, accumulatorIdentifier,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -208,7 +208,7 @@ public class AIRRequest {
 	public boolean deleteDedicatedAccounts(String msisdn,Integer serviceClassCurrent ,HashSet<DedicatedAccount> dedicatedAccountIdentifier,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeleteDedicatedAccounts().delete(getConnection(), msisdn, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
+		boolean result = new DeleteDedicatedAccounts().delete(air, msisdn, serviceClassCurrent, dedicatedAccountIdentifier,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -216,7 +216,7 @@ public class AIRRequest {
 	public boolean deleteUsageThresholds(String msisdn,HashSet<UsageThreshold> usageThresholds,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeleteUsageThresholds().delete(getConnection(), msisdn, usageThresholds,originOperatorID);
+		boolean result = new DeleteUsageThresholds().delete(air, msisdn, usageThresholds,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -224,14 +224,14 @@ public class AIRRequest {
 	public void getPromotionCounters(String msisdn) {
 		AIRConnector air = getConnection();
 
-		new GetPromotionCounters().getData(getConnection(), msisdn);
+		new GetPromotionCounters().getData(air, msisdn);
 		setSuccessfully(air.isAvailable());
 	}
 
-	public HashSet<PromotionPlanInformation> getPromotionPlans(String msisdn,String originOperatorID) {
+	public HashSet<PromotionPlanInformation> getPromotionPlans(String msisdn, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		HashSet<PromotionPlanInformation> result = new GetPromotionPlans().getData(getConnection(), msisdn,originOperatorID);
+		HashSet<PromotionPlanInformation> result = new GetPromotionPlans().getData(air, msisdn, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -239,7 +239,7 @@ public class AIRRequest {
 	public boolean updateAccumulators(String msisdn,HashSet<AccumulatorInformation> accumulatorUpdateInformation,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdateAccumulators().update(getConnection(), msisdn, accumulatorUpdateInformation,originOperatorID);
+		boolean result = new UpdateAccumulators().update(air, msisdn, accumulatorUpdateInformation,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -247,15 +247,15 @@ public class AIRRequest {
 	public boolean updatePromotionPlan(String msisdn,String promotionPlanAction,PromotionPlanInformation promotionPlanNew,PromotionPlanInformation promotionPlanOld,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdatePromotionPlan().update(getConnection(), msisdn, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
+		boolean result = new UpdatePromotionPlan().update(air, msisdn, promotionPlanAction, promotionPlanNew,promotionPlanOld,originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean installSubscriber (String msisdn,int serviceClassNew,boolean temporaryBlockedFlag,String originOperatorID) {
+	public boolean installSubscriber (String msisdn, int serviceClassNew, boolean temporaryBlockedFlag, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new InstallSubscriber().install(getConnection(), msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
+		boolean result = new InstallSubscriber().install(air, msisdn, serviceClassNew, temporaryBlockedFlag, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -263,23 +263,23 @@ public class AIRRequest {
 	public boolean linkSubordinateSubscriber (String msisdn,String masterAccountNumber,String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new LinkSubordinateSubscriber().link(getConnection(), msisdn, masterAccountNumber, originOperatorID);
+		boolean result = new LinkSubordinateSubscriber().link(air, msisdn, masterAccountNumber, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean refill(String msisdn,String transactionAmount,String transactionCurrency,String refillProfileID,String voucherActivationCode,String transactionType,String transactionCode,String originOperatorID) {
+	public boolean refill(String msisdn, String transactionAmount, String transactionCurrency, String refillProfileID, String voucherActivationCode, String transactionType, String transactionCode, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new Refill().update(getConnection(), msisdn,transactionAmount,transactionCurrency,refillProfileID,voucherActivationCode,originOperatorID,transactionType,transactionCode);
+		boolean result = new Refill().update(air, msisdn, transactionAmount, transactionCurrency, refillProfileID, voucherActivationCode, originOperatorID, transactionType, transactionCode);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
 
-	public boolean deleteSubscriber(String msisdn,String originOperatorID) {
+	public boolean deleteSubscriber(String msisdn, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeleteSubscriber().delete(getConnection(), msisdn,originOperatorID);
+		boolean result = new DeleteSubscriber().delete(air, msisdn, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -287,7 +287,7 @@ public class AIRRequest {
 	public boolean addPeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, boolean acceptServiceIDAlreadyExist, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new AddPeriodicAccountManagementData().add(getConnection(), msisdn, pamInformationList, acceptServiceIDAlreadyExist, originOperatorID);
+		boolean result = new AddPeriodicAccountManagementData().add(air, msisdn, pamInformationList, acceptServiceIDAlreadyExist, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -295,7 +295,7 @@ public class AIRRequest {
 	public boolean deletePeriodicAccountManagementData(String msisdn, PamInformationList pamInformationList, String originOperatorID, boolean acceptServiceIDNotExist) {
 		AIRConnector air = getConnection();
 
-		boolean result = new DeletePeriodicAccountManagementData().delete(getConnection(), msisdn, pamInformationList, originOperatorID, acceptServiceIDNotExist);
+		boolean result = new DeletePeriodicAccountManagementData().delete(air, msisdn, pamInformationList, originOperatorID, acceptServiceIDNotExist);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -303,7 +303,7 @@ public class AIRRequest {
 	public boolean runPeriodicAccountManagement(String msisdn, int pamServiceID, String originOperatorID ) {
 		AIRConnector air = getConnection();
 
-		boolean result = new RunPeriodicAccountManagement().run(getConnection(), msisdn, pamServiceID, originOperatorID);
+		boolean result = new RunPeriodicAccountManagement().run(air, msisdn, pamServiceID, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}
@@ -311,7 +311,7 @@ public class AIRRequest {
 	public boolean updatePeriodicAccountManagementData(String msisdn, PamUpdateInformationList pamUpdateInformationList, String originOperatorID) {
 		AIRConnector air = getConnection();
 
-		boolean result = new UpdatePeriodicAccountManagementData().update(getConnection(), msisdn, pamUpdateInformationList, originOperatorID);
+		boolean result = new UpdatePeriodicAccountManagementData().update(air, msisdn, pamUpdateInformationList, originOperatorID);
 		setSuccessfully(air.isAvailable());
 		return result;
 	}

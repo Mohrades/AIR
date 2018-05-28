@@ -6,6 +6,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class AIRConnector {
 
 	private BufferedInputStream in;
@@ -68,9 +72,7 @@ public class AIRConnector {
             "Host: " + ip + ":" + port + "\n" +
             "Authorization: Basic cHNhcHB1c2VyOnBzYXBwdXNlckAxMjM=\n\n";
 
-            requete = header + requete;
-
-            byte data[] = requete.getBytes();
+            byte data[] = (header + requete).getBytes();
             out.write(data, 0, data.length);
             out.flush();
 
@@ -81,7 +83,11 @@ public class AIRConnector {
             int timeout = 0;
             while (in.available() == 0) {
             	timeout += sleep;
-            	if(timeout >= 3000) {
+
+            	/*if(timeout >= 3000) {*/
+            	if(timeout >= 4500) {
+            		log(requete);
+            		handleTimeoutException(timeout);
             		return "";
             	}
 
@@ -89,7 +95,8 @@ public class AIRConnector {
             }
 
             // pause supplementaire pour s'assurer de la réception de l'entièreté de la reponse
-            Thread.sleep(10);
+            // Thread.sleep(10);
+            Thread.sleep(15);
 
             while (in.available() > 0) {
             	in.read(lecteur);
@@ -114,7 +121,22 @@ public class AIRConnector {
 
         }
 
+        log(requete);
         return "";
+	}
+
+	public void log(String requete) {
+		if(requete.contains("<methodCall><methodName>Get")) ;
+		else {
+			Logger logger = LogManager.getLogger("logging.log4j.AirRequestLogger");
+			logger.log(Level.WARN, requete);
+			// logger.shutdown();
+		}
+	}
+
+	public void handleTimeoutException(int timeout) {
+		Logger logger = LogManager.getLogger("logging.log4j.AirAvailabilityLogger");
+		logger.error("HOST = " + ip + ",   PORT = " + port + ",   TIMEOUT = " + timeout);
 	}
 
 }
